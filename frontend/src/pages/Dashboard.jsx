@@ -20,7 +20,6 @@ const Dashboard = () => {
       weight: 'Approximately 100 kg',
       date: '2024-09-05',
       status: 'verified',
-      rewardEarned: true,
     },
     {
       id: 2,
@@ -82,7 +81,7 @@ const Dashboard = () => {
                 <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
               </svg>
             </div>
-            <span className="text-xl font-semibold text-gray-900">Zero2Hero</span>
+            <span className="text-xl font-semibold text-gray-900">PROJECT</span>
           </div>
 
           <nav className="space-y-2">
@@ -122,30 +121,6 @@ const Dashboard = () => {
               </svg>
               <span className="font-medium">Collect Waste</span>
             </button>
-
-            <button
-              onClick={() => setActiveMenu('rewards')}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                activeMenu === 'rewards' ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-              </svg>
-              <span className="font-medium">Rewards</span>
-            </button>
-
-            <button
-              onClick={() => setActiveMenu('leaderboard')}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                activeMenu === 'leaderboard' ? 'bg-green-50 text-green-700' : 'text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-              </svg>
-              <span className="font-medium">Leaderboard</span>
-            </button>
           </nav>
         </div>
 
@@ -175,7 +150,7 @@ const Dashboard = () => {
                     <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <span className="text-xl font-semibold text-gray-900">Zero2Hero</span>
+                <span className="text-xl font-semibold text-gray-900">PROJECT</span>
               </div>
             </div>
 
@@ -199,11 +174,6 @@ const Dashboard = () => {
                 </svg>
                 <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">1</span>
               </button>
-
-              <div className="flex items-center space-x-2 bg-green-100 px-3 py-1.5 rounded-lg">
-                <span className="text-sm font-semibold text-green-700">0.00</span>
-              </div>
-
               <div className="relative">
                 <button className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg">
                   <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
@@ -261,9 +231,6 @@ const Dashboard = () => {
 
                     <div className="flex flex-col items-end space-y-3">
                       {getStatusBadge(collection.status)}
-                      {collection.rewardEarned && (
-                        <span className="text-sm font-medium text-green-600">Reward Earned</span>
-                      )}
                       {collection.canComplete && (
                         <button className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors">
                           Complete & Verify

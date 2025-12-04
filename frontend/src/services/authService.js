@@ -1,0 +1,85 @@
+import { apiClient } from './apiClient';
+
+export const authService = {
+  /**
+   * Login user
+   * @param {string} email - User email
+   * @param {string} password - User password
+   * @returns {Promise<{user: Object, token: string}>}
+   */
+  async login(email, password) {
+    const response = await apiClient.post('/auth/login', { email, password });
+    // Backend returns: { success: true, data: { user, token } }
+    return {
+      user: response.data.user,
+      token: response.data.token,
+    };
+  },
+
+  /**
+   * Register new user
+   * @param {Object} userData - User registration data
+   * @param {string} userData.name - User name
+   * @param {string} userData.email - User email
+   * @param {string} userData.password - User password
+   * @returns {Promise<{user: Object, token: string}>}
+   */
+  async register(userData) {
+    const response = await apiClient.post('/auth/register', userData);
+    // Backend returns: { success: true, data: { user, token } }
+    return {
+      user: response.data.user,
+      token: response.data.token,
+    };
+  },
+
+  /**
+   * Logout user
+   */
+  async logout() {
+    try {
+      // Call backend logout endpoint if token exists
+      const token = localStorage.getItem('token');
+      if (token) {
+        await apiClient.post('/auth/logout');
+      }
+    } catch (error) {
+      // Even if logout fails, continue with client-side cleanup
+      console.error('Logout error:', error);
+    }
+    // Clear token from localStorage (handled in AuthContext)
+    return Promise.resolve();
+  },
+
+  /**
+   * Get current authenticated user
+   * @returns {Promise<Object>} User object
+   */
+  async getCurrentUser() {
+    const response = await apiClient.get('/auth/me');
+    // Backend returns: { success: true, data: { user } }
+    return response.data.user;
+  },
+
+  /**
+   * Request password reset
+   * @param {string} email - User email
+   * @returns {Promise<Object>}
+   */
+  async forgotPassword(email) {
+    const response = await apiClient.post('/auth/forgot-password', { email });
+    return response;
+  },
+
+  /**
+   * Reset password with token
+   * @param {string} token - Reset token
+   * @param {string} password - New password
+   * @returns {Promise<Object>}
+   */
+  async resetPassword(token, password) {
+    const response = await apiClient.post('/auth/reset-password', { token, password });
+    return response;
+  },
+};
+

@@ -36,13 +36,13 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="lg:w-2/5 flex flex-col justify-center items-center p-8 md:p-12 bg-white text-[18px]">
-        <div className="w-full max-w-sm">
-          <h2 className="text-4xl font-semibold text-gray-900 mb-2">Welcome Back</h2>
-          <p className="text-base text-gray-500 mb-8">Enter your email and password to sign in</p>
+      <div className="lg:w-2/5 flex flex-col justify-center items-center p-6 md:p-8 bg-white">
+        <div className="w-full max-w-md">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-1">Welcome Back</h2>
+          <p className="text-sm text-gray-500 mb-6">Enter your email and password to sign in</p>
 
           {error && (
-            <div className="mb-6 rounded-xl bg-red-50 border border-red-200 p-4 animate-fade-in">
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 animate-fade-in">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
                   <svg className="h-6 w-6 text-red-600" viewBox="0 0 20 20" fill="currentColor">
@@ -66,8 +66,8 @@ const Login = () => {
           )}
 
           <form onSubmit={handleSubmit}>
-            <div className="mb-6">
-              <label htmlFor="email" className="block text-base font-medium text-gray-700 mb-2">
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
               <input
@@ -76,13 +76,13 @@ const Login = () => {
                 placeholder="Your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out text-[18px]"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out text-sm"
                 required
               />
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-base font-medium text-gray-700 mb-2">
+            <div className="mb-4">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
               <input
@@ -91,12 +91,12 @@ const Login = () => {
                 placeholder="Your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out text-[18px]"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out text-sm"
                 required
               />
             </div>
 
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
                 <div
                   className={`toggle-switch relative rounded-full cursor-pointer transition-all duration-300 flex items-center ${
@@ -118,7 +118,7 @@ const Login = () => {
                     }}
                   />
                 </div>
-                <label htmlFor="rememberMe" className="text-base text-gray-600 select-none cursor-pointer">
+                <label htmlFor="rememberMe" className="text-sm text-gray-600 select-none cursor-pointer">
                   Remember me
                 </label>
               </div>
@@ -126,15 +126,15 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-amber-400 text-white font-bold rounded-xl shadow-lg hover:bg-amber-500 transition duration-300 ease-in-out transform hover:scale-[1.01] text-[18px]"
+              className="w-full py-2 bg-amber-400 text-white font-semibold rounded-lg shadow-md hover:bg-amber-500 transition duration-300 ease-in-out text-sm"
             >
               SIGN IN
             </button>
           </form>
 
-          <div className="text-center mt-6">
-            <span className="text-base text-gray-500">Don't have an account? </span>
-            <Link to="/register" className="text-base text-green-600 font-semibold hover:text-green-700 transition duration-150">
+          <div className="text-center mt-4">
+            <span className="text-sm text-gray-500">Don't have an account? </span>
+            <Link to="/register" className="text-sm text-green-600 font-semibold hover:text-green-700 transition duration-150">
               Sign up
             </Link>
           </div>

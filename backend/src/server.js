@@ -10,6 +10,10 @@ import adminWasteRoutes from './routes/adminWasteRoutes.js';
 import adminUserRoutes from './routes/adminUserRoutes.js';
 import adminFeedbackRoutes from './routes/adminFeedbackRoutes.js';
 import adminDashboardRoutes from './routes/adminDashboardRoutes.js';
+import adminAnalyticsRoutes from './routes/adminAnalyticsRoutes.js';
+import zoneRoutes from './routes/zoneRoutes.js';
+import adminZoneRoutes from './routes/adminZoneRoutes.js';
+import generatorDetailsRoutes from './routes/generatorDetailsRoutes.js';
 
 // Initialize Express app
 const app = express();
@@ -35,11 +39,15 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/waste', wasteRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/zones', zoneRoutes);
+app.use('/api/generator-details', generatorDetailsRoutes);
 app.use('/api/admin', adminAuthRoutes);
 app.use('/api/admin/reports', adminWasteRoutes);
 app.use('/api/admin/users', adminUserRoutes);
 app.use('/api/admin/feedback', adminFeedbackRoutes);
 app.use('/api/admin/summary', adminDashboardRoutes);
+app.use('/api/admin/analytics', adminAnalyticsRoutes);
+app.use('/api/admin/zones', adminZoneRoutes);
 
 // 404 handler
 app.use((req, res) => {

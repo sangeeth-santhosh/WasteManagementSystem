@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdminHeader = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="flex-shrink-0 h-16 bg-white shadow-sm flex items-center justify-start px-8 border-b border-slate-100 z-0">
       {/* Search and utility elements (aligned right) */}
@@ -27,7 +30,10 @@ const AdminHeader = () => {
         </div>
 
         {/* Add button */}
-        <button className="px-4 py-2 rounded-full bg-emerald-500 text-xs font-semibold text-white shadow-sm hover:bg-emerald-600 transition">
+        <button
+          onClick={() => navigate('/admin/dashboard/zones')}
+          className="px-4 py-2 rounded-full bg-emerald-500 text-xs font-semibold text-white shadow-sm hover:bg-emerald-600 transition"
+        >
           Add Collection Point
         </button>
 

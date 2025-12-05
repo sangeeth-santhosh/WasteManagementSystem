@@ -4,6 +4,8 @@ import {
   login,
   getCurrentUser,
   logout,
+  updateProfile,
+  changePassword,
 } from '../controllers/authController.js';
 import { authenticate } from '../middleware/authMiddleware.js';
 
@@ -36,6 +38,20 @@ router.get('/me', authenticate, getCurrentUser);
  * @access  Private
  */
 router.post('/logout', authenticate, logout);
+
+/**
+ * @route   PUT /api/auth/me
+ * @desc    Update current user profile
+ * @access  Private
+ */
+router.put('/me', authenticate, updateProfile);
+
+/**
+ * @route   PUT /api/auth/change-password
+ * @desc    Change user password
+ * @access  Private
+ */
+router.put('/change-password', authenticate, changePassword);
 
 export default router;
 

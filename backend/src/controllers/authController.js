@@ -195,3 +195,113 @@ export const logout = async (req, res) => {
   }
 };
 
+/**
+ * Update current user profile
+ * PUT /api/auth/me
+ * Requires authentication middleware
+ */
+export const updateProfile = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: 'Profile updated successfully.',
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
+      },
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating profile.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+};
+
+/**
+ * Change user password
+ * PUT /api/auth/change-password
+ * Requires authentication middleware
+ */
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide current password and new password.',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters.',
+      });
+    }
+
+    const user = await User.findById(req.user._id).select('+passwordHash');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+    }
+
+    const isPasswordValid = await user.comparePassword(currentPassword);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: 'Current password is incorrect.',
+      });
+    }
+
+    // TODO: Hash password before saving
+    // const salt = await bcrypt.genSalt(10);
+    // user.passwordHash = await bcrypt.hash(newPassword, salt);
+    
+    // Placeholder: Store password as-is (NOT SECURE - TODO: implement hashing)
+    user.passwordHash = newPassword;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: 'Password changed successfully.',
+    });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error changing password.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+};
+

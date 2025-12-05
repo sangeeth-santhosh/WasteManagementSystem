@@ -16,5 +16,14 @@ export const wasteService = {
   updateReportStatus(id, newStatus) {
     return apiClient.patch(`/waste/${id}/status`, { newStatus });
   },
+  getWeeklySummary() {
+    return apiClient.get("/waste/weekly-summary");
+  },
+  getMonthlySummary() {
+    return apiClient.get("/waste/monthly-summary");
+  },
+  getMonthlyHistory() {
+    return apiClient.get("/waste/monthly-history");
+  },
 };
 

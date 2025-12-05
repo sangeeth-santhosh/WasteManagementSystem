@@ -1,11 +1,27 @@
 import WasteReport from '../models/WasteReport.js';
+import { getGeneratorDetailsForReports } from './generatorDetailsController.js';
 
 export const getAllReports = async (req, res) => {
   try {
     const reports = await WasteReport.find({})
       .sort({ createdAt: -1 })
-      .populate('user', 'name email role');
-    return res.json({ success: true, data: reports });
+      .populate('user', 'name email role')
+      .populate('generatorDetailsId');
+
+    const reportIds = reports.map((r) => r._id);
+    const generatorDetailsMap = await getGeneratorDetailsForReports(reportIds);
+
+    const reportsWithDetails = reports.map((report) => {
+      const reportObj = report.toObject();
+      const genDetails = generatorDetailsMap[report._id.toString()];
+      if (genDetails) {
+        reportObj.generatorDetails = genDetails.details;
+        reportObj.generatorType = genDetails.generatorType;
+      }
+      return reportObj;
+    });
+
+    return res.json({ success: true, data: reportsWithDetails });
   } catch (error) {
     return res.status(500).json({ success: false, message: 'Failed to fetch reports' });
   }

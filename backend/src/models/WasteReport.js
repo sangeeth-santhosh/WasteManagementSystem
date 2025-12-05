@@ -7,8 +7,24 @@ const wasteReportSchema = new mongoose.Schema(
     dryKg: { type: Number, default: 0 },
     plasticKg: { type: Number, default: 0 },
     eWasteKg: { type: Number, default: 0 },
-    zone: { type: String, required: true, enum: ['A', 'B', 'C'] },
+    zone: { type: String, default: '' },
     details: { type: String, default: '' },
+    zoneId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zone' },
+    zoneNameSnapshot: { type: String, default: '' },
+    placeId: { type: String, default: '' },
+    placeNameSnapshot: { type: String, default: '' },
+    generatorDetailsId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'GeneratorDetails',
+    },
+    generatorType: {
+      type: String,
+      enum: ['household', 'shop', 'institution', 'office', 'apartment'],
+    },
+    generatorDetails: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
     status: {
       type: String,
       enum: ['Pending', 'Verified', 'Collected', 'Cancelled'],

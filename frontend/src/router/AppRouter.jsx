@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Home, ReportWaste, CollectWaste, Feedback, NotFound } from "../pages";
+import Profile from "../pages/Profile";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
@@ -88,6 +89,7 @@ const AppRouter = () => {
           <Route path="report" element={<ReportWaste />} />
           <Route path="collect" element={<CollectWaste />} />
           <Route path="feedback" element={<Feedback />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
 
         {/* 404 Route */}

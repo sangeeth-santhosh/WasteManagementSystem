@@ -55,6 +55,21 @@ export const authService = {
    * Get current authenticated user
    * @returns {Promise<Object>} User object
    */
+  async updateProfile(data) {
+    const response = await apiClient.put('/auth/me', data);
+    return {
+      user: response.data.user,
+    };
+  },
+
+  async changePassword(currentPassword, newPassword) {
+    const response = await apiClient.put('/auth/change-password', {
+      currentPassword,
+      newPassword,
+    });
+    return response;
+  },
+
   async getCurrentUser() {
     const response = await apiClient.get('/auth/me');
     // Backend returns: { success: true, data: { user } }

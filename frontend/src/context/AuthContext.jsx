@@ -72,6 +72,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUser = (userData) => {
+    setUser(userData);
+  };
+
   const value = {
     user,
     token,
@@ -79,6 +83,7 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
+    updateUser,
     isAuthenticated: !!token && !!user,
   };
 

@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin', 'collector'],
       default: 'user',
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields

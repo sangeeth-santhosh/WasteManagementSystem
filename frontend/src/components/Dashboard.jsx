@@ -358,9 +358,9 @@ const Dashboard = () => {
                 <span className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center font-bold">1</span>
               </button>
 
-              <div className="flex items-center space-x-2 bg-gradient-to-r from-green-100 to-green-50 px-4 py-2 rounded-lg border border-green-200">
+              {/* <div className="flex items-center space-x-2 bg-gradient-to-r from-green-100 to-green-50 px-4 py-2 rounded-lg border border-green-200">
                 <span className="text-sm font-bold text-green-700">0.00</span>
-              </div>
+              </div> */}
 
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -370,7 +370,7 @@ const Dashboard = () => {
                   <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md">
                     <span className="text-sm font-bold text-white">{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-700">{getFirstName()}</span>
+                  <span className="text-xl font-semibold text-gray-700">{getFirstName()}</span>
                   <svg className={`w-4 h-4 text-gray-600 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>

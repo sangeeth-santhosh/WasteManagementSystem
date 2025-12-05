@@ -3,6 +3,13 @@ import cors from 'cors';
 import { connectDB } from './config/db.js';
 import { config } from './config/env.js';
 import authRoutes from './routes/authRoutes.js';
+import wasteRoutes from './routes/wasteRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
+import adminAuthRoutes from './routes/adminAuthRoutes.js';
+import adminWasteRoutes from './routes/adminWasteRoutes.js';
+import adminUserRoutes from './routes/adminUserRoutes.js';
+import adminFeedbackRoutes from './routes/adminFeedbackRoutes.js';
+import adminDashboardRoutes from './routes/adminDashboardRoutes.js';
 
 // Initialize Express app
 const app = express();
@@ -26,6 +33,13 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/waste', wasteRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/admin', adminAuthRoutes);
+app.use('/api/admin/reports', adminWasteRoutes);
+app.use('/api/admin/users', adminUserRoutes);
+app.use('/api/admin/feedback', adminFeedbackRoutes);
+app.use('/api/admin/summary', adminDashboardRoutes);
 
 // 404 handler
 app.use((req, res) => {

@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { feedbackService } from "../services/feedbackService";
+import Card from "../components/ui/Card";
+import Button from "../components/ui/Button";
+import Badge from "../components/ui/Badge";
 
 const Feedback = () => {
   const [form, setForm] = useState({ subject: "", message: "" });
@@ -63,91 +66,85 @@ const Feedback = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-green-600 font-semibold uppercase tracking-wide">Feedback</p>
-          <h1 className="text-2xl font-bold text-gray-900 mt-1">Share your feedback</h1>
-          <p className="text-gray-600 mt-1">Help us improve waste collection with your suggestions.</p>
-        </div>
+      <div>
+        <p className="text-sm uppercase tracking-wide text-emerald-600 font-semibold mb-1">Feedback</p>
+        <h1 className="text-2xl font-bold text-gray-900">Share Your Feedback</h1>
+        <p className="text-gray-600 mt-1">Help us improve waste collection with your suggestions and ideas.</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm space-y-4">
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Subject (optional)</label>
-          <input
-            type="text"
-            value={form.subject}
-            onChange={(e) => handleChange("subject", e.target.value)}
-            placeholder="Pick a topic"
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Message <span className="text-gray-500 font-normal">(up to 2000 characters)</span>
-          </label>
-          <textarea
-            rows="12"
-            maxLength={2000}
-            value={form.message}
-            onChange={(e) => handleChange("message", e.target.value)}
-            placeholder="Share your experience or suggestions in detail. Feel free to write as much as you'd like..."
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-y min-h-[200px] text-base leading-relaxed"
-          />
-          <div className="text-xs text-gray-500 mt-1 text-right">
-            {form.message.length} / 2000 characters
+      <Card className="p-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Send Feedback</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Subject (optional)</label>
+            <input
+              type="text"
+              value={form.subject}
+              onChange={(e) => handleChange("subject", e.target.value)}
+              placeholder="Pick a topic"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            />
           </div>
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm disabled:opacity-60"
-        >
-          {loading ? "Sending..." : "Send feedback"}
-        </button>
-        {error && (
-          <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
-            {error}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Message <span className="text-gray-500 font-normal">(up to 2000 characters)</span>
+            </label>
+            <textarea
+              rows="10"
+              maxLength={2000}
+              value={form.message}
+              onChange={(e) => handleChange("message", e.target.value)}
+              placeholder="Share your experience or suggestions in detail. Feel free to write as much as you'd like..."
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-y min-h-[180px] text-base leading-relaxed transition-all"
+            />
+            <div className="text-xs text-gray-500 mt-1 text-right">
+              {form.message.length} / 2000 characters
+            </div>
           </div>
-        )}
-        {submitted && (
-          <div className="p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
-            Thanks for your feedback! We appreciate your time.
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+              {loading ? "Sending..." : "Send Feedback"}
+            </Button>
           </div>
-        )}
-      </form>
+          {error && (
+            <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+              {error}
+            </div>
+          )}
+          {submitted && (
+            <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg">
+              ✅ Thanks for your feedback! We appreciate your time.
+            </div>
+          )}
+        </form>
+      </Card>
 
-      <div className="mt-8">
+      <div>
         <h2 className="text-xl font-bold text-gray-900 mb-4">My Feedback History</h2>
         {loadingHistory ? (
-          <div className="text-center py-8 text-gray-500">Loading feedback history...</div>
+          <Card className="p-8 text-center">
+            <p className="text-gray-500">Loading feedback history...</p>
+          </Card>
         ) : feedbackHistory.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 bg-white border border-gray-100 rounded-xl">
-            <p>No feedback submitted yet.</p>
-          </div>
+          <Card className="p-8 text-center">
+            <p className="text-gray-500">No feedback submitted yet.</p>
+          </Card>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {feedbackHistory.map((item) => (
-              <div
-                key={item._id}
-                className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-start justify-between mb-2">
+              <Card key={item._id} className="p-5" hover>
+                <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex-1">
                     {item.subject && (
-                      <h3 className="font-semibold text-gray-900 mb-1">{item.subject}</h3>
+                      <h3 className="font-bold text-gray-900 mb-2">{item.subject}</h3>
                     )}
-                    <p className="text-sm text-gray-600 line-clamp-3">{item.message}</p>
+                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{item.message}</p>
                   </div>
-                  <span
-                    className={`ml-4 inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                      item
-                    )}`}
-                  >
+                  <Badge variant={item.resolved ? 'resolved' : 'pending'}>
                     {getStatusLabel(item)}
-                  </span>
+                  </Badge>
                 </div>
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                   <p className="text-xs text-gray-500">
                     Submitted: {new Date(item.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -167,7 +164,7 @@ const Feedback = () => {
                     </p>
                   )}
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         )}

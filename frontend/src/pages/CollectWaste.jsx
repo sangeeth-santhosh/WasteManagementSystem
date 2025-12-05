@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { wasteService } from "../services/wasteService";
+import Card from "../components/ui/Card";
+import Badge from "../components/ui/Badge";
 
-const statusStyles = {
-  Pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  Verified: "bg-blue-100 text-blue-800 border-blue-200",
-  Collected: "bg-green-100 text-green-800 border-green-200",
-  Cancelled: "bg-red-100 text-red-800 border-red-200",
+const getStatusVariant = (status) => {
+  const map = {
+    Pending: 'pending',
+    Verified: 'verified',
+    Collected: 'collected',
+    Cancelled: 'cancelled',
+  };
+  return map[status] || 'default';
 };
 
 const CollectWaste = () => {
@@ -107,108 +112,121 @@ const CollectWaste = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-green-600 font-semibold uppercase tracking-wide">History</p>
-          <h1 className="text-2xl font-bold text-gray-900 mt-1">Your waste reports</h1>
-          <p className="text-gray-600 mt-1">Track statuses. Admins can update a report status.</p>
-        </div>
+      <div>
+        <p className="text-sm uppercase tracking-wide text-emerald-600 font-semibold mb-1">Waste History</p>
+        <h1 className="text-2xl font-bold text-gray-900">Your Waste Reports</h1>
+        <p className="text-gray-600 mt-1">Track your waste collection status and history.</p>
       </div>
 
       {!isAdmin && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
-            <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">This Week</p>
-            <p className="text-2xl font-bold text-green-600">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="p-5" hover>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-gray-600">This Week</p>
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <span className="text-xl">📅</span>
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">
               {loadingSummaries ? "—" : `${weeklySummary?.totalWaste || "0.00"} kg`}
             </p>
             <p className="text-xs text-gray-500 mt-1">
               {weeklySummary?.reportCount || 0} {weeklySummary?.reportCount === 1 ? "report" : "reports"}
             </p>
-          </div>
-          <div className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
-            <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">This Month</p>
-            <p className="text-2xl font-bold text-green-600">
+          </Card>
+          <Card className="p-5" hover>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-gray-600">This Month</p>
+              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                <span className="text-xl">📊</span>
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">
               {loadingSummaries ? "—" : `${monthlySummary?.totalWaste || "0.00"} kg`}
             </p>
             <p className="text-xs text-gray-500 mt-1">
               {monthlySummary?.reportCount || 0} {monthlySummary?.reportCount === 1 ? "report" : "reports"}
             </p>
-          </div>
-          <div className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
-            <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">All Time</p>
-            <p className="text-2xl font-bold text-green-600">
+          </Card>
+          <Card className="p-5" hover>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-gray-600">All Time</p>
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                <span className="text-xl">⭐</span>
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">
               {loadingSummaries ? "—" : `${monthlyHistory?.allTimeTotal || "0.00"} kg`}
             </p>
             <p className="text-xs text-gray-500 mt-1">{reports.length} total reports</p>
-          </div>
+          </Card>
         </div>
       )}
 
       {!isAdmin && monthlyHistory && monthlyHistory.monthlyHistory && monthlyHistory.monthlyHistory.length > 0 && (
-        <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Monthly Totals</h2>
+        <Card className="p-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Monthly Totals</h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-3 text-sm font-semibold text-gray-700">Month</th>
-                  <th className="text-right py-2 px-3 text-sm font-semibold text-gray-700">Total Waste</th>
-                  <th className="text-right py-2 px-3 text-sm font-semibold text-gray-700">Reports</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Month</th>
+                  <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Total Waste</th>
+                  <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Reports</th>
                 </tr>
               </thead>
               <tbody>
                 {monthlyHistory.monthlyHistory.map((month, idx) => (
-                  <tr key={month.monthKey} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-3 text-sm text-gray-900">{month.month}</td>
-                    <td className="py-3 px-3 text-sm font-semibold text-gray-900 text-right">{month.totalWaste} kg</td>
-                    <td className="py-3 px-3 text-sm text-gray-600 text-right">{month.reportCount}</td>
+                  <tr key={month.monthKey} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td className="py-3 px-4 text-sm text-gray-900">{month.month}</td>
+                    <td className="py-3 px-4 text-sm font-semibold text-gray-900 text-right">{month.totalWaste} kg</td>
+                    <td className="py-3 px-4 text-sm text-gray-600 text-right">{month.reportCount}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
       )}
 
       {!isAdmin && (
-        <div className="flex gap-2 border-b border-gray-200">
+        <div className="flex gap-2 border-b border-gray-200 pb-1">
           <button
             onClick={() => setActiveTab("all")}
-            className={`px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`px-4 py-2.5 text-sm font-semibold transition-all duration-150 rounded-t-lg ${
               activeTab === "all"
-                ? "text-green-600 border-b-2 border-green-600"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-emerald-600 border-b-2 border-emerald-600 bg-emerald-50/50"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             }`}
           >
             All Time
           </button>
           <button
             onClick={() => setActiveTab("week")}
-            className={`px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`px-4 py-2.5 text-sm font-semibold transition-all duration-150 rounded-t-lg ${
               activeTab === "week"
-                ? "text-green-600 border-b-2 border-green-600"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-emerald-600 border-b-2 border-emerald-600 bg-emerald-50/50"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             }`}
           >
             This Week
           </button>
           <button
             onClick={() => setActiveTab("month")}
-            className={`px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`px-4 py-2.5 text-sm font-semibold transition-all duration-150 rounded-t-lg ${
               activeTab === "month"
-                ? "text-green-600 border-b-2 border-green-600"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-emerald-600 border-b-2 border-emerald-600 bg-emerald-50/50"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             }`}
           >
             This Month
           </button>
           <button
             onClick={() => setActiveTab("zone")}
-            className={`px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`px-4 py-2.5 text-sm font-semibold transition-all duration-150 rounded-t-lg ${
               activeTab === "zone"
-                ? "text-green-600 border-b-2 border-green-600"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-emerald-600 border-b-2 border-emerald-600 bg-emerald-50/50"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             }`}
           >
             By Zone
@@ -230,71 +248,86 @@ const CollectWaste = () => {
         ) : (
           <div className="space-y-6">
             {Object.entries(filteredData).map(([zone, zoneReports]) => (
-              <div key={zone} className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <Card key={zone} className="p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
                   {zone} ({zoneReports.length} {zoneReports.length === 1 ? "report" : "reports"})
                 </h3>
                 <div className="space-y-3">
                   {zoneReports.map((report) => (
-                    <div key={report._id} className="bg-gray-50 rounded-lg p-4">
-                      <div className="flex flex-wrap gap-4 items-center justify-between">
-                        <div className="space-y-1">
-                          <p className="text-sm text-gray-500">Created</p>
-                          <p className="font-semibold text-gray-900 text-sm">
-                            {new Date(report.createdAt).toLocaleString()}
+                    <Card key={report._id} className="p-4 bg-gray-50/50" hover>
+                      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                        <div className="space-y-1 flex-1">
+                          <p className="text-sm font-semibold text-gray-900">
+                            {new Date(report.createdAt).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
                           </p>
                           {report.placeNameSnapshot && (
-                            <p className="text-xs text-gray-600">{report.placeNameSnapshot}</p>
+                            <p className="text-xs text-gray-600">📍 {report.placeNameSnapshot}</p>
                           )}
                         </div>
 
                         <div className="flex flex-wrap gap-2">
-                          <div className="px-2 py-1 bg-green-50 rounded text-xs text-green-700 font-semibold">
+                          <div className="px-2.5 py-1 bg-green-50 rounded-lg text-xs text-green-700 font-semibold border border-green-100">
                             Wet: {report.wetKg} kg
                           </div>
-                          <div className="px-2 py-1 bg-blue-50 rounded text-xs text-blue-700 font-semibold">
+                          <div className="px-2.5 py-1 bg-blue-50 rounded-lg text-xs text-blue-700 font-semibold border border-blue-100">
                             Dry: {report.dryKg} kg
                           </div>
-                          <div className="px-2 py-1 bg-amber-50 rounded text-xs text-amber-700 font-semibold">
+                          <div className="px-2.5 py-1 bg-amber-50 rounded-lg text-xs text-amber-700 font-semibold border border-amber-100">
                             Plastic: {report.plasticKg} kg
                           </div>
-                          <div className="px-2 py-1 bg-purple-50 rounded text-xs text-purple-700 font-semibold">
+                          <div className="px-2.5 py-1 bg-purple-50 rounded-lg text-xs text-purple-700 font-semibold border border-purple-100">
                             E-Waste: {report.eWasteKg} kg
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
-                          <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${statusStyles[report.status]}`}
-                          >
-                            {report.status}
-                          </span>
-                        </div>
+                        <Badge variant={getStatusVariant(report.status)}>
+                          {report.status}
+                        </Badge>
                       </div>
-                    </div>
+                    </Card>
                   ))}
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         )
       ) : Array.isArray(filteredData) && filteredData.length === 0 ? (
-        <div className="text-gray-600">No reports yet.</div>
+        <Card className="p-8 text-center">
+          <p className="text-gray-600">No reports yet. Start by reporting your waste!</p>
+        </Card>
       ) : (
         <div className="space-y-4">
           {Array.isArray(filteredData) &&
             filteredData.map((report) => (
-              <div key={report._id} className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm">
-                <div className="flex flex-wrap gap-4 items-center justify-between">
-                  <div className="space-y-1">
-                    <p className="text-sm text-gray-500">Created</p>
-                    <p className="font-semibold text-gray-900">{new Date(report.createdAt).toLocaleString()}</p>
+              <Card key={report._id} className="p-6" hover>
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                  <div className="space-y-2 flex-1">
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <p className="text-sm font-semibold text-gray-900">
+                        {new Date(report.createdAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
+                      <Badge variant={getStatusVariant(report.status)}>
+                        {report.status}
+                      </Badge>
+                    </div>
                     <p className="text-sm text-gray-600">
-                      {report.zoneNameSnapshot || report.zone || "Unknown Zone"}
+                      📍 {report.zoneNameSnapshot || report.zone || "Unknown Zone"}
                       {report.placeNameSnapshot && ` • ${report.placeNameSnapshot}`}
                     </p>
                     {report.generatorType && (
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500">
                         Generator: {report.generatorType.charAt(0).toUpperCase() + report.generatorType.slice(1)}
                         {report.generatorDetails?.houseNumber && ` • ${report.generatorDetails.houseNumber}`}
                         {report.generatorDetails?.shopName && ` • ${report.generatorDetails.shopName}`}
@@ -305,42 +338,37 @@ const CollectWaste = () => {
                     )}
                   </div>
 
-                  <div className="flex flex-wrap gap-3">
-                    <div className="px-3 py-2 bg-green-50 rounded-lg text-sm text-green-700 font-semibold">
+                  <div className="flex flex-wrap gap-2">
+                    <div className="px-3 py-1.5 bg-green-50 rounded-lg text-xs text-green-700 font-semibold border border-green-100">
                       Wet: {report.wetKg} kg
                     </div>
-                    <div className="px-3 py-2 bg-blue-50 rounded-lg text-sm text-blue-700 font-semibold">
+                    <div className="px-3 py-1.5 bg-blue-50 rounded-lg text-xs text-blue-700 font-semibold border border-blue-100">
                       Dry: {report.dryKg} kg
                     </div>
-                    <div className="px-3 py-2 bg-amber-50 rounded-lg text-sm text-amber-700 font-semibold">
+                    <div className="px-3 py-1.5 bg-amber-50 rounded-lg text-xs text-amber-700 font-semibold border border-amber-100">
                       Plastic: {report.plasticKg} kg
                     </div>
-                    <div className="px-3 py-2 bg-purple-50 rounded-lg text-sm text-purple-700 font-semibold">
+                    <div className="px-3 py-1.5 bg-purple-50 rounded-lg text-xs text-purple-700 font-semibold border border-purple-100">
                       E-Waste: {report.eWasteKg} kg
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold border ${statusStyles[report.status]}`}
-                    >
-                      {report.status}
-                    </span>
-                    {isAdmin && (
+                  {isAdmin && (
+                    <div className="w-full md:w-auto">
                       <select
                         value={report.status}
                         onChange={(e) => handleStatusChange(report._id, e.target.value)}
-                        className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        className="w-full md:w-auto px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                       >
                         <option value="Pending">Pending</option>
                         <option value="Verified">Verified</option>
                         <option value="Collected">Collected</option>
                         <option value="Cancelled">Cancelled</option>
                       </select>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
-              </div>
+              </Card>
             ))}
         </div>
       )}

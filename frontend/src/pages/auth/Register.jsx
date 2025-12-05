@@ -43,8 +43,13 @@ const Register = () => {
 
       <div className="lg:w-2/5 flex flex-col justify-center items-center p-6 md:p-8 bg-white">
         <div className="w-full max-w-md">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-1">Create Account</h2>
-          <p className="text-sm text-gray-500 mb-6">Enter your details to create a new account</p>
+          <div className="mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg mb-4 mx-auto">
+              <span className="text-white font-bold text-lg">WM</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-1">Create Account</h2>
+            <p className="text-sm text-gray-500 text-center">Enter your details to create a new account</p>
+          </div>
 
           {error && (
             <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 animate-fade-in">
@@ -133,9 +138,9 @@ const Register = () => {
 
             <button
               type="submit"
-              className="w-full py-2 bg-amber-400 text-white font-semibold rounded-lg shadow-md hover:bg-amber-500 transition duration-300 ease-in-out text-sm"
+              className="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-lg shadow-md hover:from-emerald-600 hover:to-emerald-700 transition-all duration-150 text-sm"
             >
-              SIGN UP
+              Sign Up
             </button>
           </form>
 

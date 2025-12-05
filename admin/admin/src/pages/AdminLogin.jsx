@@ -23,7 +23,8 @@ const AdminLogin = () => {
       const token = res.data?.token || res.token || res?.data?.token;
       if (!token) throw new Error('No token returned');
       localStorage.setItem('adminToken', token);
-      navigate('/admin/dashboard/home');
+      // navigate into dashboard (use replace so back button doesn't return to login)
+      navigate('/admin/dashboard', { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed');
     } finally {

@@ -8,6 +8,7 @@ import AdminReports from "./pages/AdminReports.jsx";
 import AdminUsers from "./pages/AdminUsers.jsx";
 import AdminFeedback from "./pages/AdminFeedback.jsx";
 import AdminLayout from "./components/AdminLayout.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 const RequireAdmin = () => {
   const token = localStorage.getItem("adminToken");
@@ -32,7 +33,7 @@ const App = () => {
       <Routes>
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<RequireAdmin />}>
-          <Route path="/admin/dashboard" element={<AdminLayout />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />}>
             <Route path="home" element={<AdminHome />} />
             <Route path="reports" element={<AdminReports />} />
             <Route path="users" element={<AdminUsers />} />

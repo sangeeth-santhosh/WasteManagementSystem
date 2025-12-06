@@ -40,3 +40,5 @@ const GeneratorDetails = mongoose.model('GeneratorDetails', generatorDetailsSche
 
 export default GeneratorDetails;
 
+
+

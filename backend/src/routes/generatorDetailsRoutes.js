@@ -8,3 +8,5 @@ router.get('/report/:reportId', authenticate, getGeneratorDetailsByReportId);
 
 export default router;
 
+
+

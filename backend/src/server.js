@@ -2,18 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
 import { config } from './config/env.js';
+import zoneRoutes from './routes/zoneRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import wasteRoutes from './routes/wasteRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
+import adminZoneRoutes from './routes/adminZoneRoutes.js';
 import adminAuthRoutes from './routes/adminAuthRoutes.js';
 import adminWasteRoutes from './routes/adminWasteRoutes.js';
 import adminUserRoutes from './routes/adminUserRoutes.js';
 import adminFeedbackRoutes from './routes/adminFeedbackRoutes.js';
 import adminDashboardRoutes from './routes/adminDashboardRoutes.js';
 import adminAnalyticsRoutes from './routes/adminAnalyticsRoutes.js';
-import zoneRoutes from './routes/zoneRoutes.js';
-import adminZoneRoutes from './routes/adminZoneRoutes.js';
 import generatorDetailsRoutes from './routes/generatorDetailsRoutes.js';
+import adminNotificationRoutes from './routes/adminNotificationRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 // Initialize Express app
 const app = express();
@@ -45,9 +47,11 @@ app.use('/api/admin', adminAuthRoutes);
 app.use('/api/admin/reports', adminWasteRoutes);
 app.use('/api/admin/users', adminUserRoutes);
 app.use('/api/admin/feedback', adminFeedbackRoutes);
+app.use('/api/admin/notifications', adminNotificationRoutes);
 app.use('/api/admin/summary', adminDashboardRoutes);
 app.use('/api/admin/analytics', adminAnalyticsRoutes);
 app.use('/api/admin/zones', adminZoneRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // 404 handler
 app.use((req, res) => {

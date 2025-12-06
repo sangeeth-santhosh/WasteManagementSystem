@@ -1,5 +1,7 @@
 import WasteReport from '../models/WasteReport.js';
 import { getGeneratorDetailsForReports } from './generatorDetailsController.js';
+// Notification helper for report status changes
+import { createReportStatusNotification } from './notificationController.js';
 
 export const getAllReports = async (req, res) => {
   try {
@@ -23,7 +25,10 @@ export const getAllReports = async (req, res) => {
 
     return res.json({ success: true, data: reportsWithDetails });
   } catch (error) {
-    return res.status(500).json({ success: false, message: 'Failed to fetch reports' });
+    console.error('getAllReports error:', error);
+    return res
+      .status(500)
+      .json({ success: false, message: 'Failed to fetch reports' });
   }
 };
 
@@ -37,19 +42,36 @@ export const updateReportStatus = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid status' });
     }
 
-    const updated = await WasteReport.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
+    // 🔥 get the old report first
+    const oldReport = await WasteReport.findById(id);
 
-    if (!updated) {
-      return res.status(404).json({ success: false, message: 'Report not found' });
+    if (!oldReport) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Report not found' });
     }
 
-    return res.json({ success: true, data: updated });
+    // If status is same, no need to update or send notification
+    if (oldReport.status === status) {
+      return res.json({
+        success: true,
+        data: oldReport,
+        message: 'Status is already set to this value',
+      });
+    }
+
+    // ✅ update & save
+    oldReport.status = status;
+    const updatedReport = await oldReport.save();
+
+    // 🔔 create notification for the user (auto)
+    await createReportStatusNotification(oldReport, updatedReport);
+
+    return res.json({ success: true, data: updatedReport });
   } catch (error) {
-    return res.status(500).json({ success: false, message: 'Failed to update status' });
+    console.error('updateReportStatus error:', error);
+    return res
+      .status(500)
+      .json({ success: false, message: 'Failed to update status' });
   }
 };
-

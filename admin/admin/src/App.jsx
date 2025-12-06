@@ -2,15 +2,15 @@ import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
 import "./index.css";
-import AdminLogin from "./pages/AdminLogin.jsx";
-import AdminReports from "./pages/AdminReports.jsx";
-import AdminUsers from "./pages/AdminUsers.jsx";
-import AdminFeedback from "./pages/AdminFeedback.jsx";
-import AdminDashboard from "./pages/AdminDashboard.jsx";
-import DashboardHome from "./pages/DashboardHome.jsx";
-import AdminAnalytics from "./pages/AdminAnalytics.jsx";
-import AdminNotifications from "./pages/AdminNotifications.jsx";
-import AdminZoneManagement from "./pages/AdminZoneManagement.jsx";
+import AdminLogin from "./pages/AdminLogin";
+import AdminReports from "./pages/AdminReports";
+import AdminUsers from "./pages/AdminUsers";
+import AdminFeedback from "./pages/AdminFeedback";
+import AdminDashboard from "./pages/AdminDashboard";
+import DashboardHome from "./pages/DashboardHome";
+import AdminAnalytics from "./pages/AdminAnalytics";
+import AdminNotifications from "./pages/AdminNotification";
+import AdminZoneManagement from "./pages/AdminZoneManagement";
 
 const RequireAdmin = () => {
   const token = localStorage.getItem("adminToken");

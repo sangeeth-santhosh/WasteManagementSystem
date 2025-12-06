@@ -59,5 +59,13 @@ export const adminService = {
   deleteZone(id) {
     return adminClient.delete(`/zones/${id}`);
   },
+  sendNotification(payload) {
+    // backend route: POST /api/admin/notifications
+    return adminClient.post('/notifications', payload);
+  },
+  getNotifications(limit = 20) {
+    const query = limit ? `?limit=${limit}` : '';
+    return adminClient.get(`/notifications${query}`);
+  },
 };
 

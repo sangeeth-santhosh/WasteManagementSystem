@@ -1,6 +1,7 @@
 import WasteReport from '../models/WasteReport.js';
 import Zone from '../models/Zone.js';
 import GeneratorDetails from '../models/GeneratorDetails.js';
+import { createReportStatusNotification } from './notificationController.js';
 
 export const createReport = async (req, res) => {
   try {
@@ -111,17 +112,26 @@ export const updateReportStatus = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid status' });
     }
 
-    const updated = await WasteReport.findByIdAndUpdate(
-      id,
-      { status: newStatus },
-      { new: true }
-    );
+    const oldReport = await WasteReport.findById(id);
 
-    if (!updated) {
+    if (!oldReport) {
       return res.status(404).json({ success: false, message: 'Report not found' });
     }
 
-    return res.json({ success: true, data: updated });
+    if (oldReport.status === newStatus) {
+      return res.json({
+        success: true,
+        data: oldReport,
+        message: 'Status is already set to this value',
+      });
+    }
+
+    oldReport.status = newStatus;
+    const updatedReport = await oldReport.save();
+
+    await createReportStatusNotification(oldReport, updatedReport);
+
+    return res.json({ success: true, data: updatedReport });
   } catch (error) {
     console.error('updateReportStatus error', error);
     return res.status(500).json({ success: false, message: 'Failed to update status' });

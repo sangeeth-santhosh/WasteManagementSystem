@@ -1,51 +1,51 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema(
   {
     // Target user (null if it's a broadcast-style or zone-level notification)
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: false,
     },
 
     // Optional: link to a specific waste report
     wasteReport: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'WasteReport',
+      ref: "WasteReport",
       required: false,
     },
 
     // Optional: zone targeting (snapshot + id)
     zoneId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Zone',
+      ref: "Zone",
       required: false,
     },
     zoneNameSnapshot: {
       type: String,
-      default: '',
+      default: "",
     },
 
     // Core notification content
     title: {
       type: String,
-      required: [true, 'Notification title is required'],
+      required: [true, "Notification title is required"],
       trim: true,
-      maxlength: 150,
+      maxlength: 450,
     },
     message: {
       type: String,
-      required: [true, 'Notification message is required'],
+      required: [true, "Notification message is required"],
       trim: true,
-      maxlength: 1000,
+      maxlength: 5000,
     },
 
     // Classification of notification
     type: {
       type: String,
-      enum: ['SYSTEM', 'REPORT_STATUS', 'REMINDER', 'ZONE_ALERT'],
-      default: 'SYSTEM',
+      enum: ["SYSTEM", "REPORT_STATUS", "REMINDER", "ZONE_ALERT"],
+      default: "SYSTEM",
     },
 
     // Read/unread behaviour
@@ -62,8 +62,8 @@ const notificationSchema = new mongoose.Schema(
     // This is just for info; actual email sending is handled in controller/service
     deliveryMethod: {
       type: String,
-      enum: ['IN_APP', 'IN_APP_EMAIL'],
-      default: 'IN_APP',
+      enum: ["IN_APP", "IN_APP_EMAIL"],
+      default: "IN_APP",
     },
   },
   {
@@ -76,6 +76,6 @@ notificationSchema.index({ user: 1, isRead: 1, createdAt: -1 });
 notificationSchema.index({ zoneId: 1, createdAt: -1 });
 notificationSchema.index({ type: 1, createdAt: -1 });
 
-const Notification = mongoose.model('Notification', notificationSchema);
+const Notification = mongoose.model("Notification", notificationSchema);
 
 export default Notification;

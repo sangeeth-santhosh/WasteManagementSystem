@@ -1,9 +1,9 @@
 // src/components/notification/NotificationBell.jsx
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { notificationService } from '../../services/notificationService';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { notificationService } from "../../services/notificationService";
 
 const formatRelativeTime = (dateString) => {
-  if (!dateString) return '';
+  if (!dateString) return "";
   const date = new Date(dateString);
   const diffMs = Date.now() - date.getTime();
   const diffSec = Math.floor(diffMs / 1000);
@@ -11,7 +11,7 @@ const formatRelativeTime = (dateString) => {
   const diffHour = Math.floor(diffMin / 60);
   const diffDay = Math.floor(diffHour / 24);
 
-  if (diffSec < 60) return 'Just now';
+  if (diffSec < 60) return "Just now";
   if (diffMin < 60) return `${diffMin}m ago`;
   if (diffHour < 24) return `${diffHour}h ago`;
   if (diffDay < 7) return `${diffDay}d ago`;
@@ -19,9 +19,9 @@ const formatRelativeTime = (dateString) => {
 };
 
 const FILTERS = [
-  { key: 'all', label: 'All' },
-  { key: 'REPORT_STATUS', label: 'Report Updates' },
-  { key: 'GENERAL', label: 'General' },
+  { key: "all", label: "All" },
+  { key: "REPORT_STATUS", label: "Report Updates" },
+  { key: "GENERAL", label: "General" },
 ];
 
 const NotificationBell = ({ onReportStatusHighlightChange }) => {
@@ -29,24 +29,24 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState("all");
   const [hasNewNotification, setHasNewNotification] = useState(false);
 
   const hasUnread = useMemo(() => unreadCount > 0, [unreadCount]);
   const prevUnreadRef = useRef(0);
 
   const filteredNotifications = useMemo(() => {
-    if (activeFilter === 'all') return notifications;
-    if (activeFilter === 'REPORT_STATUS') {
-      return notifications.filter((n) => n.type === 'REPORT_STATUS');
+    if (activeFilter === "all") return notifications;
+    if (activeFilter === "REPORT_STATUS") {
+      return notifications.filter((n) => n.type === "REPORT_STATUS");
     }
-    return notifications.filter((n) => n.type !== 'REPORT_STATUS');
+    return notifications.filter((n) => n.type !== "REPORT_STATUS");
   }, [notifications, activeFilter]);
 
   const updateReportStatusHighlight = (list) => {
     if (!onReportStatusHighlightChange) return;
     const hasReportStatusUnread = list.some(
-      (n) => n.type === 'REPORT_STATUS' && !n.isRead
+      (n) => n.type === "REPORT_STATUS" && !n.isRead
     );
     onReportStatusHighlightChange(hasReportStatusUnread);
   };
@@ -56,7 +56,7 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
       const count = await notificationService.getUnreadCount();
       setUnreadCount(count);
     } catch (err) {
-      console.error('Failed to load unread count:', err);
+      console.error("Failed to load unread count:", err);
     }
   };
 
@@ -67,7 +67,7 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
       setNotifications(data);
       updateReportStatusHighlight(data);
     } catch (err) {
-      console.error('Failed to load notifications:', err);
+      console.error("Failed to load notifications:", err);
     } finally {
       setLoading(false);
     }
@@ -102,12 +102,12 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
       refreshUnreadCount();
       if (open) loadNotifications();
     };
-    window.addEventListener('focus', handleFocus);
+    window.addEventListener("focus", handleFocus);
 
     return () => {
       alive = false;
       clearInterval(intervalId);
-      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener("focus", handleFocus);
     };
   }, [open]);
 
@@ -118,7 +118,7 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
         const list = await notificationService.getNotifications(80);
         updateReportStatusHighlight(list);
       } catch (err) {
-        console.error('Failed to preload notifications:', err);
+        console.error("Failed to preload notifications:", err);
       }
     };
     preload();
@@ -145,7 +145,7 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
       });
       setUnreadCount((c) => Math.max(0, c - 1));
     } catch (err) {
-      console.error('Failed to mark notification as read:', err);
+      console.error("Failed to mark notification as read:", err);
     }
   };
 
@@ -161,22 +161,34 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
       });
       setUnreadCount(0);
     } catch (err) {
-      console.error('Failed to mark all as read:', err);
+      console.error("Failed to mark all as read:", err);
     }
   };
 
-  const badgeLabel = unreadCount > 9 ? '9+' : unreadCount;
+  const badgeLabel = unreadCount > 9 ? "9+" : unreadCount;
+
+  const getIconForType = (type) => {
+    if (type === "REPORT_STATUS") return "🗑️";
+    return "🔔";
+  };
+
+  const getTypeLabel = (type) => {
+    if (type === "REPORT_STATUS") return "Report update";
+    if (!type || type === "GENERAL") return "General";
+    return type;
+  };
 
   return (
     <div className="relative">
+      {/* Bell button */}
       <button
         type="button"
         onClick={handleBellClick}
         className={`relative inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 focus:outline-none ${
           hasUnread
-            ? 'bg-emerald-500 text-white shadow-lg ring-2 ring-emerald-200'
-            : 'text-gray-700 hover:bg-gray-100'
-        } ${hasNewNotification ? 'animate-pulse' : ''}`}
+            ? "bg-emerald-500 text-white shadow-lg ring-2 ring-emerald-200"
+            : "text-slate-600 hover:bg-slate-100"
+        } ${hasNewNotification ? "animate-pulse" : ""}`}
         aria-label="Notifications"
       >
         <svg
@@ -201,121 +213,160 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
         )}
       </button>
 
+      {/* Overlay for outside click */}
       {open && (
-        <div className="fixed inset-0 z-40">
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
-            onClick={() => setOpen(false)}
-            aria-hidden="true"
-          />
+        <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}>
+          {/* Transparent overlay so we can still see the page; clicking closes */}
+          <div className="absolute inset-0" />
 
-          <div className="absolute inset-0 flex items-start justify-center p-4 sm:p-6 md:p-8 overflow-y-auto">
-            <div className="relative mx-auto bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-4xl w-[95%] max-h-[85vh] flex flex-col border border-gray-100">
-              <div className="flex items-start justify-between gap-3 pb-4 border-b border-gray-100">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Notifications</h2>
-                  <p className="text-sm text-gray-600">Stay updated on your waste report status and alerts.</p>
+          {/* Dropdown panel */}
+          <div
+            className="absolute right-4 top-14 sm:right-6 sm:top-16 z-50"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-[340px] sm:w-[420px] max-h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden">
+              {/* Header */}
+              <div className="px-4 py-3 flex items-center justify-between border-b border-slate-100">
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-slate-900">
+                    Notifications
+                  </span>
+                  <span className="text-xs text-slate-500">
+                    Updates about your waste reports & alerts
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-100">
-                    {hasUnread ? `${unreadCount} unread` : 'All read'}
+                  <span className="rounded-full bg-emerald-50 text-emerald-700 text-[11px] px-2.5 py-1 font-semibold border border-emerald-100">
+                    {hasUnread ? `${unreadCount} unread` : "All caught up"}
                   </span>
                   <button
                     type="button"
                     onClick={handleMarkAll}
-                    className="text-xs font-semibold text-emerald-700 px-3 py-1.5 rounded-full hover:bg-emerald-50 border border-emerald-100"
                     disabled={!hasUnread}
+                    className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 disabled:text-slate-300"
                   >
-                    Mark all as read
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setOpen(false)}
-                    className="text-gray-500 hover:text-gray-800 text-lg leading-none"
-                    aria-label="Close"
-                  >
-                    ×
+                    Mark all
                   </button>
                 </div>
               </div>
 
-              <div className="py-3 border-b border-gray-100 flex flex-wrap items-center gap-2">
-                {FILTERS.map((f) => (
-                  <button
-                    key={f.key}
-                    type="button"
-                    onClick={() => setActiveFilter(f.key)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
-                      activeFilter === f.key
-                        ? 'bg-emerald-500 text-white border-emerald-500'
-                        : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
-                    }`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
+              {/* Filters as pill tabs */}
+              <div className="px-4 pt-3 pb-2 border-b border-slate-100">
+                <div className="inline-flex items-center rounded-full bg-slate-50 p-1 text-xs font-medium">
+                  {FILTERS.map((f) => (
+                    <button
+                      key={f.key}
+                      type="button"
+                      onClick={() => setActiveFilter(f.key)}
+                      className={`px-3 py-1 rounded-full transition-all ${
+                        activeFilter === f.key
+                          ? "bg-white shadow-sm text-slate-900"
+                          : "text-slate-500 hover:text-slate-700"
+                      }`}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto pt-4 space-y-3">
+              {/* List */}
+              <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1">
                 {loading ? (
-                  <div className="p-6 text-sm text-gray-500">Loading notifications…</div>
+                  <div className="px-3 py-6 text-xs text-slate-500">
+                    Loading notifications…
+                  </div>
                 ) : filteredNotifications.length === 0 ? (
-                  <div className="p-10 text-center text-sm text-gray-500 space-y-2">
-                    <div className="text-3xl">📭</div>
-                    <div className="font-semibold text-gray-800">No notifications yet</div>
-                    <div className="text-gray-500">You’ll see updates about your reports and activity here.</div>
+                  <div className="px-4 py-10 text-center text-xs text-slate-500 space-y-2">
+                    <div className="text-3xl mb-1">📭</div>
+                    <div className="text-sm font-semibold text-slate-800">
+                      No notifications
+                    </div>
+                    <div>
+                      You’ll see waste report updates and system alerts here.
+                    </div>
                   </div>
                 ) : (
                   filteredNotifications.map((n) => (
                     <div
                       key={n._id}
-                      className={`flex flex-col sm:flex-row sm:items-start gap-3 p-4 rounded-xl border shadow-sm ${
-                        n.isRead ? 'bg-white' : 'bg-blue-50'
+                      className={`group flex gap-3 rounded-xl px-3 py-3 text-sm transition border ${
+                        n.isRead
+                          ? "bg-white hover:bg-slate-50 border-transparent"
+                          : "bg-emerald-50/60 border-emerald-100 hover:bg-emerald-50"
                       }`}
                     >
-                      <div className="flex items-start gap-3 flex-1">
-                        <div className="mt-1">
-                          <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold uppercase ${
-                              n.type === 'REPORT_STATUS'
-                                ? 'bg-emerald-100 text-emerald-700'
-                                : 'bg-gray-100 text-gray-700'
-                            }`}
-                          >
-                            {n.type === 'REPORT_STATUS' ? 'Report update' : n.type || 'General'}
-                          </span>
+                      {/* Icon */}
+                      <div className="flex-shrink-0">
+                        <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-500/90 to-emerald-600 flex items-center justify-center text-base shadow-sm text-white">
+                          {getIconForType(n.type)}
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="min-w-0">
-                              <div className="text-sm font-semibold text-gray-900 truncate">
-                                {n.title || 'Notification'}
-                              </div>
-                              <div className="text-sm text-gray-700 leading-snug break-words">
-                                {n.message}
-                              </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <span className="text-[13px] font-semibold text-slate-900 truncate max-w-[190px]">
+                                {n.title || "Notification"}
+                              </span>
+                              <span className="inline-flex items-center rounded-full bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wide">
+                                {getTypeLabel(n.type)}
+                              </span>
                             </div>
-                            <div className="text-[11px] text-gray-500 whitespace-nowrap">
-                              {formatRelativeTime(n.createdAt)}
-                            </div>
+                            <p className="mt-0.5 text-[13px] text-slate-700 leading-snug break-words">
+                              {n.message}
+                            </p>
                           </div>
-                          {!n.isRead && (
-                            <div className="flex items-center gap-2 mt-3">
-                              <span className="inline-flex h-2 w-2 rounded-full bg-emerald-600" />
-                              <button
-                                type="button"
-                                onClick={() => handleMarkOne(n)}
-                                className="inline-flex items-center text-xs font-semibold text-emerald-700 px-3 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200"
-                              >
-                                OK, mark as read
-                              </button>
-                            </div>
-                          )}
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                              {formatRelativeTime(n.createdAt)}
+                            </span>
+                            {!n.isRead && (
+                              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                            )}
+                          </div>
                         </div>
+
+                        {!n.isRead && (
+                          <div className="mt-2 flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleMarkOne(n)}
+                              className="inline-flex items-center text-[11px] font-semibold text-emerald-700 px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200"
+                            >
+                              Mark as read
+                            </button>
+                            {n.type === "REPORT_STATUS" && (
+                              <span className="text-[11px] text-slate-500">
+                                Check your report status in{" "}
+                                <span className="font-semibold">
+                                  My Reports
+                                </span>
+                                .
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))
                 )}
+              </div>
+
+              {/* Footer */}
+              <div className="px-4 py-3 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-[11px] text-slate-400">
+                  Notifications are kept for the last 30 days.
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="text-[11px] font-semibold text-slate-600 hover:text-slate-900"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>

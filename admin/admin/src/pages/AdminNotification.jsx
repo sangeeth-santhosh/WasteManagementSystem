@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
-import { adminService } from '../api/adminService';
+import { useEffect, useMemo, useState } from "react";
+import { adminService } from "../api/adminService";
 
 const formatDate = (value) => {
-  if (!value) return '—';
+  if (!value) return "—";
   return new Date(value).toLocaleString();
 };
 
@@ -13,19 +13,19 @@ const AdminNotifications = () => {
   const [loading, setLoading] = useState(true);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
   const [sending, setSending] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // filters
-  const [zoneId, setZoneId] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
+  const [zoneId, setZoneId] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   // notification form
-  const [title, setTitle] = useState('');
-  const [message, setMessage] = useState('');
-  const [type, setType] = useState('SYSTEM');
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [type, setType] = useState("SYSTEM");
   const [sendEmailToo, setSendEmailToo] = useState(false);
 
   const loadBaseData = async () => {
@@ -37,10 +37,10 @@ const AdminNotifications = () => {
       ]);
       setZones(zonesRes?.data || zonesRes || []);
       setReports(reportsRes?.data || reportsRes || []);
-      setError('');
+      setError("");
     } catch (err) {
       console.error(err);
-      setError(err.message || 'Failed to load data');
+      setError(err.message || "Failed to load data");
     } finally {
       setLoading(false);
     }
@@ -68,11 +68,11 @@ const AdminNotifications = () => {
     return reports.filter((r) => {
       let ok = true;
 
-      if (zoneId !== 'all') {
+      if (zoneId !== "all") {
         ok = ok && r.zoneId === zoneId;
       }
 
-      if (statusFilter !== 'all') {
+      if (statusFilter !== "all") {
         ok = ok && r.status === statusFilter;
       }
 
@@ -95,11 +95,23 @@ const AdminNotifications = () => {
 
   const handleSendNotification = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     if (!title.trim() || !message.trim()) {
-      setError('Title and message are required');
+      setError("Title and message are required");
+      return;
+    }
+
+    // Enforce explicit max lengths on submit to surface a clear error
+    const trimmedTitle = title.trim();
+    const trimmedMessage = message.trim();
+    if (trimmedTitle.length > 450) {
+      setError("Max character limit exceeded: title (450)");
+      return;
+    }
+    if (trimmedMessage.length > 5000) {
+      setError("Max character limit exceeded: message (5000)");
       return;
     }
 
@@ -107,16 +119,16 @@ const AdminNotifications = () => {
       setSending(true);
 
       const payload = {
-        title: title.trim(),
-        message: message.trim(),
+        title: trimmedTitle,
+        message: trimmedMessage,
         type,
-        deliveryMethod: sendEmailToo ? 'IN_APP_EMAIL' : 'IN_APP',
+        deliveryMethod: sendEmailToo ? "IN_APP_EMAIL" : "IN_APP",
       };
 
-      if (zoneId !== 'all') {
+      if (zoneId !== "all") {
         payload.zoneId = zoneId;
       }
-      if (statusFilter !== 'all') {
+      if (statusFilter !== "all") {
         payload.status = statusFilter;
       }
       if (fromDate) {
@@ -130,14 +142,14 @@ const AdminNotifications = () => {
 
       setSuccess(
         res?.message ||
-          `Notification sent successfully to ${res?.count || 'selected'} users`
+          `Notification sent successfully to ${res?.count || "selected"} users`
       );
-      setError('');
+      setError("");
       loadRecentNotifications();
     } catch (err) {
       console.error(err);
-      setError(err.message || 'Failed to send notification');
-      setSuccess('');
+      setError(err.message || "Failed to send notification");
+      setSuccess("");
     } finally {
       setSending(false);
     }
@@ -150,9 +162,12 @@ const AdminNotifications = () => {
           <p className="text-xs uppercase tracking-wide text-emerald-600 font-semibold mb-1">
             Notifications
           </p>
-          <h1 className="text-2xl font-semibold text-gray-900">Send updates to users</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">
+            Send updates to users
+          </h1>
           <p className="text-sm text-gray-600">
-            Target users by zone, date, and report status. Preview the impacted reports and see recent sends.
+            Target users by zone, date, and report status. Preview the impacted
+            reports and see recent sends.
           </p>
         </div>
       </div>
@@ -176,8 +191,12 @@ const AdminNotifications = () => {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Send notification</h2>
-              <p className="text-sm text-gray-500">Craft a message and target users based on their report activity.</p>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Send notification
+              </h2>
+              <p className="text-sm text-gray-500">
+                Craft a message and target users based on their report activity.
+              </p>
             </div>
             <span className="text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold">
               Admin action
@@ -186,9 +205,12 @@ const AdminNotifications = () => {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-800">Title</label>
+              <label className="block text-sm font-medium text-gray-800">
+                Title
+              </label>
               <input
                 type="text"
+                maxLength={450}
                 className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-emerald-200"
                 placeholder="Collection scheduled for tomorrow"
                 value={title}
@@ -196,7 +218,9 @@ const AdminNotifications = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-800">Type</label>
+              <label className="block text-sm font-medium text-gray-800">
+                Type
+              </label>
               <select
                 className="w-full border rounded-md px-3 py-2 text-sm"
                 value={type}
@@ -211,8 +235,11 @@ const AdminNotifications = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-800">Message</label>
+            <label className="block text-sm font-medium text-gray-800">
+              Message
+            </label>
             <textarea
+              maxLength={5000}
               className="w-full border rounded-md px-3 py-2 text-sm min-h-[120px] resize-y focus:outline-none focus:ring focus:ring-emerald-200"
               placeholder={`Include clear info like: date, time, zone, collection type, etc.
 
@@ -225,7 +252,9 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-800">Target zone</label>
+              <label className="block text-sm font-medium text-gray-800">
+                Target zone
+              </label>
               <select
                 className="w-full border rounded-md px-3 py-2 text-sm"
                 value={zoneId}
@@ -240,7 +269,9 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
               </select>
             </div>
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-800">Report status</label>
+              <label className="block text-sm font-medium text-gray-800">
+                Report status
+              </label>
               <select
                 className="w-full border rounded-md px-3 py-2 text-sm"
                 value={statusFilter}
@@ -257,7 +288,9 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-800">From date</label>
+              <label className="block text-sm font-medium text-gray-800">
+                From date
+              </label>
               <input
                 type="date"
                 className="w-full border rounded-md px-3 py-2 text-sm"
@@ -266,7 +299,9 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-800">To date</label>
+              <label className="block text-sm font-medium text-gray-800">
+                To date
+              </label>
               <input
                 type="date"
                 className="w-full border rounded-md px-3 py-2 text-sm"
@@ -284,7 +319,10 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
               checked={sendEmailToo}
               onChange={(e) => setSendEmailToo(e.target.checked)}
             />
-            <label htmlFor="send-email-too" className="text-gray-700 cursor-pointer">
+            <label
+              htmlFor="send-email-too"
+              className="text-gray-700 cursor-pointer"
+            >
               Also send as email (if enabled on server)
             </label>
           </div>
@@ -295,7 +333,7 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
               disabled={sending}
               className="inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-60 disabled:cursor-not-allowed transition"
             >
-              {sending ? 'Sending…' : 'Send Notification'}
+              {sending ? "Sending…" : "Send Notification"}
             </button>
           </div>
         </form>
@@ -304,7 +342,9 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Recent notifications</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Recent notifications
+              </h2>
               <p className="text-sm text-gray-500">Latest 25 sent items.</p>
             </div>
             <button
@@ -319,7 +359,9 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
           {loadingNotifications ? (
             <div className="text-sm text-gray-500">Loading notifications…</div>
           ) : notifications.length === 0 ? (
-            <div className="text-sm text-gray-500">No notifications sent yet.</div>
+            <div className="text-sm text-gray-500">
+              No notifications sent yet.
+            </div>
           ) : (
             <div className="overflow-x-auto -mx-2">
               <table className="min-w-full text-sm">
@@ -334,16 +376,21 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
                 <tbody>
                   {notifications.map((n) => (
                     <tr key={n._id} className="border-b last:border-0">
-                      <td className="py-2 px-2 font-semibold text-gray-900 max-w-[180px] truncate" title={n.title}>
-                        {n.title || '—'}
+                      <td
+                        className="py-2 px-2 font-semibold text-gray-900 max-w-[180px] truncate"
+                        title={n.title}
+                      >
+                        {n.title || "—"}
                       </td>
                       <td className="py-2 px-2">
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-700">
-                          {n.type || 'SYSTEM'}
+                          {n.type || "SYSTEM"}
                         </span>
                       </td>
                       <td className="py-2 px-2 text-sm text-gray-700">
-                        {n.zoneNameSnapshot || n.zoneId ? 'Zone targeted' : 'All users'}
+                        {n.zoneNameSnapshot || n.zoneId
+                          ? "Zone targeted"
+                          : "All users"}
                       </td>
                       <td className="py-2 px-2 text-xs text-gray-500 whitespace-nowrap">
                         {formatDate(n.createdAt)}
@@ -364,14 +411,17 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
             Filtered Reports ({filteredReports.length})
           </h2>
           <p className="text-xs text-gray-500">
-            Users are targeted when their reports match these filters (zone, date, status).
+            Users are targeted when their reports match these filters (zone,
+            date, status).
           </p>
         </div>
 
         {loading ? (
           <div className="text-sm text-gray-500">Loading reports…</div>
         ) : filteredReports.length === 0 ? (
-          <div className="text-sm text-gray-500">No reports match the selected filters.</div>
+          <div className="text-sm text-gray-500">
+            No reports match the selected filters.
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
@@ -388,23 +438,36 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
                 {filteredReports.slice(0, 50).map((r) => (
                   <tr key={r._id} className="border-b last:border-0">
                     <td className="py-2 pr-4">
-                      {r.user?.name || 'Unknown'}{' '}
-                      <span className="text-xs text-gray-500 block">{r.user?.email}</span>
-                    </td>
-                    <td className="py-2 pr-4">{r.zoneNameSnapshot || r.zone || '—'}</td>
-                    <td className="py-2 pr-4 text-xs">
-                      Wet: {r.wetKg || 0} kg · Dry: {r.dryKg || 0} kg · Plastic: {r.plasticKg || 0} kg · E-waste: {r.eWasteKg || 0} kg
+                      {r.user?.name || "Unknown"}{" "}
+                      <span className="text-xs text-gray-500 block">
+                        {r.user?.email}
+                      </span>
                     </td>
                     <td className="py-2 pr-4">
-                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium border">{r.status}</span>
+                      {r.zoneNameSnapshot || r.zone || "—"}
                     </td>
-                    <td className="py-2 pr-4 text-xs text-gray-500">{r.createdAt ? new Date(r.createdAt).toLocaleString() : '—'}</td>
+                    <td className="py-2 pr-4 text-xs">
+                      Wet: {r.wetKg || 0} kg · Dry: {r.dryKg || 0} kg · Plastic:{" "}
+                      {r.plasticKg || 0} kg · E-waste: {r.eWasteKg || 0} kg
+                    </td>
+                    <td className="py-2 pr-4">
+                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium border">
+                        {r.status}
+                      </span>
+                    </td>
+                    <td className="py-2 pr-4 text-xs text-gray-500">
+                      {r.createdAt
+                        ? new Date(r.createdAt).toLocaleString()
+                        : "—"}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
             {filteredReports.length > 50 && (
-              <p className="mt-2 text-xs text-gray-500">Showing first 50 reports. Refine filters for a narrower segment.</p>
+              <p className="mt-2 text-xs text-gray-500">
+                Showing first 50 reports. Refine filters for a narrower segment.
+              </p>
             )}
           </div>
         )}

@@ -14,3 +14,13 @@
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("/assets/waste.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* stays fixed while scrolling */
+  background-repeat: no-repeat;
+}

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { wasteService } from "../services/wasteService";
 import NotificationBell from "./notification/NotificationBell.jsx";
+import images from "../assets/assets";
 
 const navItems = [
   {
@@ -91,24 +92,15 @@ const Layout = () => {
       <aside className="w-64 bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col shadow-xl border-r border-slate-700">
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                />
-              </svg>
+            <div className="w-12 h-12">
+              <img
+                src={images.logo1}
+                alt="Logo"
+                className="w-10 h-10 rounded-full"
+              />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Waste Manager</h2>
-              <p className="text-xs text-slate-400">Eco Solutions</p>
+              <p className="text-lg font-bold text-white">EcoPure</p>
             </div>
           </div>
 

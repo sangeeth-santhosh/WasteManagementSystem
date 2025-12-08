@@ -1,0 +1,19 @@
+{
+  "name": "waste-management-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend, frontend and admin panel for waste management system, managed from a single root.",
+  "scripts": {
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:admin": "npm run dev --prefix admin/admin",
+    "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\" \"npm:dev:admin\"",
+    "build:backend": "npm run build --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:admin": "npm run build --prefix admin/admin",
+    "build": "npm run build:backend && npm run build:frontend && npm run build:admin"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -32,6 +32,9 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [hasNewNotification, setHasNewNotification] = useState(false);
 
+  // NEW: track expanded messages
+  const [expandedIds, setExpandedIds] = useState({});
+
   const hasUnread = useMemo(() => unreadCount > 0, [unreadCount]);
   const prevUnreadRef = useRef(0);
 
@@ -178,6 +181,13 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
     return type;
   };
 
+  const toggleExpand = (id) => {
+    setExpandedIds((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   return (
     <div className="relative">
       {/* Bell button */}
@@ -193,17 +203,16 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
+          className="w-4 h-4"
           viewBox="0 0 24 24"
-          strokeWidth={1.8}
+          fill="none"
           stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M14 17h-4m6-6a4 4 0 10-8 0c0 4-2 5-2 5h12s-2-1-2-5z"
-          />
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
         </svg>
 
         {hasUnread && (
@@ -221,10 +230,12 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
 
           {/* Dropdown panel */}
           <div
-            className="absolute right-4 top-14 sm:right-6 sm:top-16 z-50"
+            // FIXED: better alignment + no weird mr-73
+            className="absolute right-3 top-16 mt-7 sm:right-6 sm:top-16 z-50"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-[340px] sm:w-[420px] max-h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden">
+            {/* slightly bigger + more modern canvas but same style */}
+            <div className="w-[360px] sm:w-[460px] max-h-[600px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden">
               {/* Header */}
               <div className="px-4 py-3 flex items-center justify-between border-b border-slate-100">
                 <div className="flex flex-col">
@@ -236,7 +247,7 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-emerald-50 text-emerald-700 text-[11px] px-2.5 py-1 font-semibold border border-emerald-100">
+                  <span className="rounded-full bg-emerald-50 text-emerald-700 text-[11px] px-2.5 py-1 font-semibold border border-emerald-100 whitespace-nowrap">
                     {hasUnread ? `${unreadCount} unread` : "All caught up"}
                   </span>
                   <button
@@ -287,71 +298,89 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
                     </div>
                   </div>
                 ) : (
-                  filteredNotifications.map((n) => (
-                    <div
-                      key={n._id}
-                      className={`group flex gap-3 rounded-xl px-3 py-3 text-sm transition border ${
-                        n.isRead
-                          ? "bg-white hover:bg-slate-50 border-transparent"
-                          : "bg-emerald-50/60 border-emerald-100 hover:bg-emerald-50"
-                      }`}
-                    >
-                      {/* Icon */}
-                      <div className="flex-shrink-0">
-                        <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-500/90 to-emerald-600 flex items-center justify-center text-base shadow-sm text-white">
-                          {getIconForType(n.type)}
-                        </div>
-                      </div>
+                  filteredNotifications.map((n) => {
+                    const isExpanded = !!expandedIds[n._id];
+                    const shouldTruncate = n.message && n.message.length > 160;
+                    const displayMessage =
+                      isExpanded || !shouldTruncate
+                        ? n.message
+                        : `${n.message.slice(0, 160)}...`;
 
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              <span className="text-[13px] font-semibold text-slate-900 truncate max-w-[190px]">
-                                {n.title || "Notification"}
-                              </span>
-                              <span className="inline-flex items-center rounded-full bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wide">
-                                {getTypeLabel(n.type)}
-                              </span>
-                            </div>
-                            <p className="mt-0.5 text-[13px] text-slate-700 leading-snug break-words">
-                              {n.message}
-                            </p>
-                          </div>
-                          <div className="flex flex-col items-end gap-1">
-                            <span className="text-[10px] text-slate-400 whitespace-nowrap">
-                              {formatRelativeTime(n.createdAt)}
-                            </span>
-                            {!n.isRead && (
-                              <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                            )}
+                    return (
+                      <div
+                        key={n._id}
+                        className={`group flex gap-3 rounded-xl px-3 py-3 text-sm transition border ${
+                          n.isRead
+                            ? "bg-white hover:bg-slate-50 border-transparent"
+                            : "bg-emerald-50/60 border-emerald-100 hover:bg-emerald-50"
+                        }`}
+                      >
+                        {/* Icon */}
+                        <div className="flex-shrink-0">
+                          <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-500/90 to-emerald-600 flex items-center justify-center text-base shadow-sm text-white">
+                            {getIconForType(n.type)}
                           </div>
                         </div>
 
-                        {!n.isRead && (
-                          <div className="mt-2 flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => handleMarkOne(n)}
-                              className="inline-flex items-center text-[11px] font-semibold text-emerald-700 px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200"
-                            >
-                              Mark as read
-                            </button>
-                            {n.type === "REPORT_STATUS" && (
-                              <span className="text-[11px] text-slate-500">
-                                Check your report status in{" "}
-                                <span className="font-semibold">
-                                  My Reports
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span className="text-[13px] font-semibold text-slate-900 truncate max-w-[190px]">
+                                  {n.title || "Notification"}
                                 </span>
-                                .
+                                <span className="inline-flex items-center rounded-full bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wide">
+                                  {getTypeLabel(n.type)}
+                                </span>
+                              </div>
+                              <p className="mt-0.5 text-[13px] text-slate-700 leading-snug break-words whitespace-pre-line">
+                                {displayMessage}
+                              </p>
+                              {shouldTruncate && (
+                                <button
+                                  type="button"
+                                  onClick={() => toggleExpand(n._id)}
+                                  className="mt-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800"
+                                >
+                                  {isExpanded ? "View less" : "View more"}
+                                </button>
+                              )}
+                            </div>
+                            <div className="flex flex-col items-end gap-1">
+                              <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                                {formatRelativeTime(n.createdAt)}
                               </span>
-                            )}
+                              {!n.isRead && (
+                                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                              )}
+                            </div>
                           </div>
-                        )}
+
+                          {!n.isRead && (
+                            <div className="mt-2 flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleMarkOne(n)}
+                                className="inline-flex items-center text-[11px] font-semibold text-emerald-700 px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200"
+                              >
+                                Mark as read
+                              </button>
+                              {n.type === "REPORT_STATUS" && (
+                                <span className="text-[11px] text-slate-500">
+                                  Check your report status in{" "}
+                                  <span className="font-semibold">
+                                    My Reports
+                                  </span>
+                                  .
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
 

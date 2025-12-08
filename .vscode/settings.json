@@ -32,10 +32,6 @@
   // Terminal Integration (Copilot in Terminal)
   "terminal.integrated.suggest.enabled": true,
   "terminal.integrated.suggest.quickSuggestions": true,
-  "github.copilot.chat.experimental.codeGeneration.instructions": true,
-
-  // Advanced Chat & Workspace Context
-  "chat.experimental.detectParticipant.enabled": true,
   "github.copilot.advanced": {
     "debug.useNodeFetcher": false,
     "debug.useElectronFetcher": true,
@@ -118,5 +114,7 @@
     "**/.git": true,
     "**/dist": true,
     "**/build": true
-  }
+  },
+  "chat.detectParticipant.enabled": true,
+  "github.copilot.chat.codeGeneration.instructions": true
 }

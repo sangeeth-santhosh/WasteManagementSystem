@@ -56,16 +56,6 @@ const Home = () => {
               </span>
             </div>
           </div>
-
-          {/* Secondary CTAs */}
-          <div className="flex flex-wrap items-center gap-4 pt-3">
-            <button className="inline-flex items-center justify-center rounded-full bg-slate-900 text-white px-5 py-2.5 text-xs md:text-sm font-medium shadow hover:bg-slate-800 transition">
-              Learn Segregation Rules
-            </button>
-            <button className="inline-flex items-center justify-center rounded-full border border-slate-300 px-5 py-2.5 text-xs md:text-sm font-medium text-slate-700 hover:bg-slate-100 transition">
-              View Community Impact
-            </button>
-          </div>
         </div>
 
         {/* Right visual: card */}

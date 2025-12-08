@@ -31,14 +31,16 @@ const AdminHeader = () => {
 
         {/* Add button */}
         <button
-          onClick={() => navigate('/admin/dashboard/zones')}
+          onClick={() => navigate("/admin/dashboard/zones")}
           className="px-4 py-2 rounded-full bg-emerald-500 text-xs font-semibold text-white shadow-sm hover:bg-emerald-600 transition"
         >
           Add Collection Point
         </button>
 
         {/* Profile (Icon embedded in shape) */}
-        <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-orange-400 to-pink-500 ring-2 ring-emerald-400 shadow-lg"></div>
+        <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-orange-400 to-pink-500 ring-2 ring-emerald-400 shadow-lg flex items-center justify-center">
+          <p className="text-center text-white font-semibold text-sm">A</p>
+        </div>
       </div>
     </header>
   );

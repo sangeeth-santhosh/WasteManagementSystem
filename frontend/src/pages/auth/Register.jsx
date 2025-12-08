@@ -9,22 +9,41 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  const validateInputs = () => {
+    if (!name.trim()) return "Name is required";
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) return "Enter a valid email";
+    if (!password || password.length < 6)
+      return "Password must be at least 6 characters";
+    if (password !== confirmPassword) return "Passwords do not match";
+    return "";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
+    const validationError = validateInputs();
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
     try {
-      await authService.register({ name, email, password });
+      setIsSubmitting(true);
+      await authService.register({
+        name: name.trim(),
+        email: email.trim(),
+        password,
+      });
       navigate("/login");
     } catch (err) {
       setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -167,9 +186,14 @@ const Register = () => {
 
             <button
               type="submit"
-              className="w-full py-2.5 bg-amber-400 text-white font-semibold rounded-xl shadow-md hover:bg-amber-500 transition duration-300 ease-in-out transform hover:scale-[1.01] text-sm"
+              disabled={isSubmitting}
+              className={`w-full py-2.5 text-white font-semibold rounded-xl shadow-md transition duration-300 ease-in-out transform text-sm ${
+                isSubmitting
+                  ? "bg-amber-300 cursor-not-allowed"
+                  : "bg-amber-400 hover:bg-amber-500 hover:scale-[1.01]"
+              }`}
             >
-              SIGN UP
+              {isSubmitting ? "Signing up..." : "SIGN UP"}
             </button>
           </form>
 

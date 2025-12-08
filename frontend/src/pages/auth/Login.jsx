@@ -8,18 +8,37 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const validateInputs = () => {
+    if (!email.trim()) return "Email is required";
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) return "Enter a valid email";
+    if (!password || password.length < 6)
+      return "Password must be at least 6 characters";
+    return "";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    const validationError = validateInputs();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     try {
-      await login(email, password);
+      setIsSubmitting(true);
+      await login(email.trim(), password);
       navigate("/");
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -159,9 +178,14 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-2.5 bg-amber-400 text-white font-semibold rounded-xl shadow-md hover:bg-amber-500 transition duration-300 ease-in-out transform hover:scale-[1.01] text-sm"
+              disabled={isSubmitting}
+              className={`w-full py-2.5 text-white font-semibold rounded-xl shadow-md transition duration-300 ease-in-out transform text-sm ${
+                isSubmitting
+                  ? "bg-amber-300 cursor-not-allowed"
+                  : "bg-amber-400 hover:bg-amber-500 hover:scale-[1.01]"
+              }`}
             >
-              SIGN IN
+              {isSubmitting ? "Signing in..." : "SIGN IN"}
             </button>
           </form>
 

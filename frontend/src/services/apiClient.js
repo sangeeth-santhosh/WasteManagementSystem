@@ -1,5 +1,10 @@
 // API client configuration for making HTTP requests
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+// Note: set VITE_API_BASE_URL (or REACT_APP_API_URL) in env for production (https://your-api) to avoid mixed content.
+// Backend must allow CORS from dev origin (http://localhost:5173 or your dev port) and deployed frontend domains (Vercel/Render URLs).
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.REACT_APP_API_URL ||
+  ''; // fallback to same-origin relative /api
 
 class ApiClient {
   constructor() {

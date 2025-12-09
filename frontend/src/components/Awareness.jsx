@@ -99,13 +99,6 @@ const Awareness = ({ routeKey }) => {
             </div>
           </div>
 
-          {/* scroll indicator */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex flex-col items-center gap-1 text-[10px] text-emerald-100/90">
-            <span className="uppercase tracking-[0.15em]">Scroll</span>
-            <div className="w-5 h-8 rounded-full border border-emerald-100 flex items-start justify-center p-1">
-              <div className="w-1 h-2 rounded-full bg-emerald-100 bounce-arrow"></div>
-            </div>
-          </div>
         </section>
 
         {/* 2) Household waste: Wet & Dry together */}

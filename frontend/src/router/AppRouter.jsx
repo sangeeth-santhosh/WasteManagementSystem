@@ -5,7 +5,6 @@ import Profile from "../pages/Profile";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import About from "../pages/About.jsx";
-import ForgotPassword from "../pages/auth/ForgotPassword";
 import Layout from "../components/Layout";
 
 /**
@@ -65,14 +64,6 @@ const AppRouter = () => {
           element={
             <PublicRoute>
               <Register />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <PublicRoute>
-              <ForgotPassword />
             </PublicRoute>
           }
         />

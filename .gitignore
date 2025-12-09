@@ -1,3 +1,95 @@
 # Build output
 **/dist/
 **/dist-ssr/
+
+# ---------------------------------------------
+# GLOBAL: LOG FILES
+# ---------------------------------------------
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ---------------------------------------------
+# GLOBAL: DEPENDENCIES / BUILD OUTPUT (ALL APPS)
+# ---------------------------------------------
+**/node_modules/
+**/dist/
+**/build/
+**/.cache/
+**/.vite/
+**/coverage/
+**/temp/
+**/out/
+
+# Vite / Next / misc (safe even if not used everywhere)
+.next/
+.vercel/
+
+# ---------------------------------------------
+# GLOBAL: ENV FILES (ALL APPS)
+# ---------------------------------------------
+*.env
+*.env.*
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# backend/.env, frontend/.env, admin/.env will all be ignored
+
+# ---------------------------------------------
+# PROJECT ROOT EXTRAS
+# ---------------------------------------------
+# ngrok binary or script at root
+/ngrok
+
+# Continue / code assistant metadata
+.continue
+.continue/
+
+# ---------------------------------------------
+# EDITOR / IDE / OS
+# ---------------------------------------------
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.iml
+
+# ---------------------------------------------
+# MISC / TEMP
+# ---------------------------------------------
+*.local
+*.cache
+*.pid
+*.seed
+*.pid.lock
+*.orig
+*.rej
+*.tmp
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# SSL / private keys (if you ever generate locally)
+*.pem
+*.key
+*.crt
+*.csr
+
+# ---------------------------------------------
+# FRONTEND/ADMIN: SOURCE MAPS (to avoid leaking source)
+# ---------------------------------------------
+**/*.map

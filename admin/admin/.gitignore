@@ -1,5 +1,5 @@
 # ---------------------------------------------
-# LOG FILES (never commit)
+# GLOBAL: LOG FILES
 # ---------------------------------------------
 logs
 *.log
@@ -10,90 +10,82 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # ---------------------------------------------
-# DEPENDENCIES / BUILD OUTPUT
+# GLOBAL: DEPENDENCIES / BUILD OUTPUT (ALL APPS)
 # ---------------------------------------------
-node_modules/
-dist/
-dist-ssr/
-build/
-.cache/
-temp/
-out/
-coverage/
+**/node_modules/
+**/dist/
+**/build/
+**/.cache/
+**/.vite/
+**/coverage/
+**/temp/
+**/out/
 
-# Vite cache
-.vite/
-
-# Next.js / Remix (safe to include)
+# Vite / Next / misc (safe even if not used everywhere)
 .next/
 .vercel/
 
 # ---------------------------------------------
-# ENVIRONMENT FILES (never commit real secrets)
+# GLOBAL: ENV FILES (ALL APPS)
 # ---------------------------------------------
+*.env
+*.env.*
 .env
-.env.*
 .env.local
 .env.development.local
 .env.production.local
 .env.test.local
 
-# ---------------------------------------------
-# SYSTEM / OS FILES
-# ---------------------------------------------
-.DS_Store
-Thumbs.db
-desktop.ini
+# backend/.env, frontend/.env, admin/.env will all be ignored
 
 # ---------------------------------------------
-# EDITOR / IDE SETTINGS
+# PROJECT ROOT EXTRAS
+# ---------------------------------------------
+# ngrok binary or script at root
+/ngrok
+
+# Continue / code assistant metadata
+.continue
+.continue/
+
+# ---------------------------------------------
+# EDITOR / IDE / OS
 # ---------------------------------------------
 .vscode/*
 !.vscode/extensions.json
 .idea/
+.DS_Store
+Thumbs.db
+desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# JetBrains
 *.iml
 
 # ---------------------------------------------
-# MISC
+# MISC / TEMP
 # ---------------------------------------------
 *.local
 *.cache
 *.pid
 *.seed
 *.pid.lock
+*.orig
+*.rej
+*.tmp
 
-# Firebase / Supabase cache
-.firebase/
-.supabase/
-
-# Typescript outputs
+# TypeScript incremental build info
 *.tsbuildinfo
 
-# SSL / private keys (NEVER commit)
+# SSL / private keys (if you ever generate locally)
 *.pem
 *.key
-*.csr
 *.crt
+*.csr
 
 # ---------------------------------------------
-# REACT / FRONTEND EXTRA SAFETY
+# FRONTEND/ADMIN: SOURCE MAPS (to avoid leaking source)
 # ---------------------------------------------
-*.map       # prevent leaking source code
-*.orig      # merge conflict backups
-*.rej       # patch rejects
-
-# ---------------------------------------------
-# BACKEND-SPECIFIC (if you add Node backend)
-# ---------------------------------------------
-uploads/
-tmp/
-sessions/
-pids/
-logs/
+**/*.map

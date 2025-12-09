@@ -115,6 +115,10 @@
     "**/dist": true,
     "**/build": true
   },
+  "files.associations": {
+    "**/src/index.css": "tailwindcss"
+  },
+  "css.lint.unknownAtRules": "ignore",
   "chat.detectParticipant.enabled": true,
   "github.copilot.chat.codeGeneration.instructions": true
 }

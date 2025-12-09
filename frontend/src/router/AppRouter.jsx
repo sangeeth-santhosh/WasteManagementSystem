@@ -45,6 +45,9 @@ const PublicRoute = ({ children }) => {
 
 /**
  * Main Application Router
+ * Deployment note:
+ * - Vercel: add vercel.json with rewrite { "source": "/(.*)", "destination": "/" }
+ * - Render (static): add redirect /* -> / with 200
  */
 const AppRouter = () => {
   return (

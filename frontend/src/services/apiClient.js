@@ -2,9 +2,7 @@
 // Note: set VITE_API_BASE_URL (or REACT_APP_API_URL) in env for production (https://your-api) to avoid mixed content.
 // Backend must allow CORS from dev origin (http://localhost:5173 or your dev port) and deployed frontend domains (Vercel/Render URLs).
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  import.meta.env.REACT_APP_API_URL ||
-  ''; // fallback to same-origin relative /api
+  import.meta.env.VITE_API_BASE_URL || import.meta.env.REACT_APP_API_URL || ""; // fallback to same-origin relative /api
 
 class ApiClient {
   constructor() {
@@ -13,12 +11,12 @@ class ApiClient {
 
   async request(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     const config = {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },
@@ -30,7 +28,7 @@ class ApiClient {
 
       if (!response.ok) {
         // Backend returns: { success: false, message: '...' }
-        const errorMessage = data.message || data.error || 'An error occurred';
+        const errorMessage = data.message || data.error || "An error occurred";
         const error = new Error(errorMessage);
         error.status = response.status;
         error.data = data;
@@ -44,18 +42,18 @@ class ApiClient {
         throw error;
       }
       // Handle network errors or JSON parsing errors
-      throw new Error(error.message || 'Network error. Please try again.');
+      throw new Error(error.message || "Network error. Please try again.");
     }
   }
 
   get(endpoint, options = {}) {
-    return this.request(endpoint, { ...options, method: 'GET' });
+    return this.request(endpoint, { ...options, method: "GET" });
   }
 
   post(endpoint, data, options = {}) {
     return this.request(endpoint, {
       ...options,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -63,7 +61,7 @@ class ApiClient {
   put(endpoint, data, options = {}) {
     return this.request(endpoint, {
       ...options,
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
   }
@@ -71,15 +69,14 @@ class ApiClient {
   patch(endpoint, data, options = {}) {
     return this.request(endpoint, {
       ...options,
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(data),
     });
   }
 
   delete(endpoint, options = {}) {
-    return this.request(endpoint, { ...options, method: 'DELETE' });
+    return this.request(endpoint, { ...options, method: "DELETE" });
   }
 }
 
 export const apiClient = new ApiClient();
-

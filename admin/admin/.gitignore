@@ -1,4 +1,6 @@
-# Logs
+# ---------------------------------------------
+# LOG FILES (never commit)
+# ---------------------------------------------
 logs
 *.log
 npm-debug.log*
@@ -7,18 +9,91 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# ---------------------------------------------
+# DEPENDENCIES / BUILD OUTPUT
+# ---------------------------------------------
+node_modules/
+dist/
+dist-ssr/
+build/
+.cache/
+temp/
+out/
+coverage/
 
-# Editor directories and files
+# Vite cache
+.vite/
+
+# Next.js / Remix (safe to include)
+.next/
+.vercel/
+
+# ---------------------------------------------
+# ENVIRONMENT FILES (never commit real secrets)
+# ---------------------------------------------
+.env
+.env.*
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# ---------------------------------------------
+# SYSTEM / OS FILES
+# ---------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------
+# EDITOR / IDE SETTINGS
+# ---------------------------------------------
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# JetBrains
+*.iml
+
+# ---------------------------------------------
+# MISC
+# ---------------------------------------------
+*.local
+*.cache
+*.pid
+*.seed
+*.pid.lock
+
+# Firebase / Supabase cache
+.firebase/
+.supabase/
+
+# Typescript outputs
+*.tsbuildinfo
+
+# SSL / private keys (NEVER commit)
+*.pem
+*.key
+*.csr
+*.crt
+
+# ---------------------------------------------
+# REACT / FRONTEND EXTRA SAFETY
+# ---------------------------------------------
+*.map       # prevent leaking source code
+*.orig      # merge conflict backups
+*.rej       # patch rejects
+
+# ---------------------------------------------
+# BACKEND-SPECIFIC (if you add Node backend)
+# ---------------------------------------------
+uploads/
+tmp/
+sessions/
+pids/
+logs/

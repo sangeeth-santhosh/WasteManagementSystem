@@ -8,7 +8,7 @@ export const authService = {
    * @returns {Promise<{user: Object, token: string}>}
    */
   async login(email, password) {
-    const response = await apiClient.post("/api/auth/login", {
+    const response = await apiClient.post("/auth/login", {
       email,
       password,
     });
@@ -28,7 +28,7 @@ export const authService = {
    * @returns {Promise<{user: Object, token: string}>}
    */
   async register(userData) {
-    const response = await apiClient.post("/api/auth/register", userData);
+    const response = await apiClient.post("/auth/register", userData);
     // Backend returns: { success: true, data: { user, token } }
     return {
       user: response.data.user,
@@ -59,14 +59,14 @@ export const authService = {
    * @returns {Promise<Object>} User object
    */
   async updateProfile(data) {
-    const response = await apiClient.put("/api/auth/me", data);
+    const response = await apiClient.put("/auth/me", data);
     return {
       user: response.data.user,
     };
   },
 
   async changePassword(currentPassword, newPassword) {
-    const response = await apiClient.put("/api/auth/change-password", {
+    const response = await apiClient.put("/auth/change-password", {
       currentPassword,
       newPassword,
     });
@@ -74,7 +74,7 @@ export const authService = {
   },
 
   async getCurrentUser() {
-    const response = await apiClient.get("/api/auth/me");
+    const response = await apiClient.get("/auth/me");
     // Backend returns: { success: true, data: { user } }
     return response.data.user;
   },

@@ -90,11 +90,15 @@ const Layout = () => {
       { threshold: 0.18 }
     );
 
+    // Reattach reveal logic on every route change
     const elements = document.querySelectorAll(".reveal");
-    elements.forEach((el) => observer.observe(el));
+    elements.forEach((el) => {
+      el.classList.remove("reveal-visible"); // reset old reveal
+      observer.observe(el);
+    });
 
     return () => observer.disconnect();
-  }, []);
+  }, [location.pathname]);
 
   const navLinkClasses = ({ isActive }) =>
     `px-5 py-2 rounded-full text-[12px] font-medium transition ${

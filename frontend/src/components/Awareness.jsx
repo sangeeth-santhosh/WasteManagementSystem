@@ -1,4 +1,20 @@
-const Awarness = () => {
+import { useEffect } from "react";
+
+const Awareness = ({ routeKey }) => {
+  // Runs every time you navigate back to this route
+  useEffect(() => {
+    // Scroll to top so the section is visible
+    try {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    } catch {
+      // fallback for older browsers
+      window.scrollTo(0, 0);
+    }
+
+    // Trigger scroll listeners (e.g. reveal / animation logic bound to scroll)
+    window.dispatchEvent(new Event("scroll"));
+  }, [routeKey]);
+
   return (
     <div>
       {/* SCROLL JOURNEY */}
@@ -299,4 +315,4 @@ const Awarness = () => {
   );
 };
 
-export default Awarness;
+export default Awareness;

@@ -1,6 +1,9 @@
-import Awarness from "../components/Awarness";
+import { useLocation } from "react-router-dom";
+import Awareness from "../components/Awareness";
 
 const Home = () => {
+  const location = useLocation();
+
   return (
     <div>
       {/* Hero content */}
@@ -162,7 +165,9 @@ const Home = () => {
                   <p className="text-[10px] text-slate-500">Reports</p>
                 </div>
                 <div className="rounded-2xl bg-slate-50 py-2.5">
-                  <p className="text-[12px] font-semibold text-amber-600">A+</p>
+                  <p className="text-[12px] font-semibold text-amber-600">
+                    A+
+                  </p>
                   <p className="text-[10px] text-slate-500">Score</p>
                 </div>
               </div>
@@ -199,8 +204,10 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Awareness always refreshes when route changes */}
       <div>
-        <Awarness />
+        <Awareness routeKey={location.key} />
       </div>
     </div>
   );

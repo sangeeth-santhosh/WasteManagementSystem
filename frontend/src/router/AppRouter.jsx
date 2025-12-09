@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Home, ReportWaste, CollectWaste, Feedback, NotFound } from "../pages";
-import Awarness from "../components/Awarness.jsx";
 import Profile from "../pages/Profile";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import About from "../pages/About.jsx";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import Layout from "../components/Layout";
 
@@ -90,7 +90,7 @@ const AppRouter = () => {
           <Route path="report" element={<ReportWaste />} />
           <Route path="collect" element={<CollectWaste />} />
           <Route path="feedback" element={<Feedback />} />
-          <Route path="about" element={<Awarness />} />
+          <Route path="about" element={<About />} />
           <Route path="profile" element={<Profile />} />
         </Route>
 

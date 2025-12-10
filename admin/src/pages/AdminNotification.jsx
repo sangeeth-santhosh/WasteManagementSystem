@@ -49,7 +49,7 @@ const AdminNotifications = () => {
   const loadRecentNotifications = async () => {
     try {
       setLoadingNotifications(true);
-      const res = await adminService.getNotifications(25);
+      const res = await adminService.getNotifications(11);
       const list = res?.notifications || res?.data || res || [];
       setNotifications(list);
     } catch (err) {
@@ -345,7 +345,7 @@ Dear resident, your e-waste collection in Zone A is scheduled for 10 AM - 12 PM 
               <h2 className="text-lg font-semibold text-gray-900">
                 Recent notifications
               </h2>
-              <p className="text-sm text-gray-500">Latest 25 sent items.</p>
+              <p className="text-sm text-gray-500">Latest 11 sent items.</p>
             </div>
             <button
               type="button"

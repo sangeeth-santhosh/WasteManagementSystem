@@ -168,7 +168,7 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
     }
   };
 
-  const badgeLabel = unreadCount > 9 ? "9+" : unreadCount;
+  const badgeLabel = unreadCount > 9 ? "" : "";
 
   const getIconForType = (type) => {
     if (type === "REPORT_STATUS") return "🗑️";
@@ -215,11 +215,7 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
           <path d="M13.73 21a2 2 0 0 1-3.46 0" />
         </svg>
 
-        {hasUnread && (
-          <span className="absolute -top-1 -right-1 inline-flex min-w-[18px] h-5 items-center justify-center px-1 rounded-full bg-red-500 text-white text-[10px] font-semibold ring-2 ring-white">
-            {badgeLabel}
-          </span>
-        )}
+        {hasUnread && <span className="">{badgeLabel}</span>}
       </button>
 
       {/* Overlay for outside click */}

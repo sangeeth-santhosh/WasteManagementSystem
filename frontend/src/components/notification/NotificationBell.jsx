@@ -231,10 +231,10 @@ const NotificationBell = ({ onReportStatusHighlightChange }) => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* slightly bigger + more modern canvas but same style */}
-            <div className="w-[360px] sm:w-[460px] max-h-[600px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden">
+            <div className="lg:w-[530px] sm:w-[460px] max-h-[600px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden">
               {/* Header */}
               <div className="px-4 py-3 flex items-center justify-between border-b border-slate-100">
-                <div className="flex flex-col">
+                <div className="flex flex-col text-left">
                   <span className="text-sm font-semibold text-slate-900">
                     Notifications
                   </span>

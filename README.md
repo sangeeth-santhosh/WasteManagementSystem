@@ -1,45 +1,61 @@
 
-<h1 align="center">🌿 EcoPure</h1>
-<p align="center">
-<strong>Web-Based Waste Management Tracking System</strong><br />
-<em>A high-performance MERN stack application for systematic waste lifecycle optimization.</em>
-</p>
 
 ---
 
-### 📌 Project Overview
+<div align="center">
+
+# 🌿 EcoPure
+
+**Systematic Waste Lifecycle & Tracking Ecosystem**
+
+---
+
+### 🌐 **Executive Overview**
 
 **EcoPure** is a robust MERN stack solution engineered for the tracking and optimization of waste management workflows. The system provides a dedicated administrative infrastructure, focusing on data integrity, real-time logging, and operational transparency.
 
----
-
-### ⚙️ Core Technical Capabilities
-
-* **Administrative Control:** Centralized dashboard for real-time monitoring of collection status and updates.
-* **Data Categorization:** Specialized NoSQL schemas for precise segregation of waste types (Organic, Recyclable, Hazardous).
-* **Role-Based Access Control (RBAC):** Secure JWT-based permission layers for Administrative and Field Operator roles.
-* **Persistent Logging:** Optimized MongoDB indexing for high-frequency entry and historical audit trails.
-* **Automated Reporting:** Programmatic generation of operational logs and disposal manifests.
+</div>
 
 ---
 
-### 🏗️ Technical Architecture (MERN)
+### ⚡ **Core Technical Capabilities**
 
-| Layer | Technology | Role |
+* **🔒 Administrative Control** | Centralized dashboard for real-time monitoring of collection status and updates.
+* **♻️ Data Categorization** | Specialized NoSQL schemas for precise segregation of waste (Organic, Recyclable, Hazardous).
+* **🛡️ Role-Based Access (RBAC)** | Secure JWT-based permission layers for Administrative and Field Operator roles.
+* **📝 Persistent Logging** | Optimized MongoDB indexing for high-frequency entry and historical audit trails.
+* **📊 Automated Reporting** | Programmatic generation of operational logs and disposal manifests.
+
+---
+
+### 🛠️ **Technical Infrastructure**
+
+| Layer | Component | Implementation |
 | --- | --- | --- |
-| **Frontend (Admin)** | **React.js** | Dynamic Administrative UI & State Management |
-| **Backend** | **Node.js / Express** | Scalable RESTful API & Business Logic |
-| **Database** | **MongoDB** | Document-based storage for waste logs & user data |
-| **Authentication** | **JWT** | Secure, stateless session management |
+| **Frontend (Admin)** | **React.js & Vite** | High-performance Administrative UI & State Management |
+| **Backend** | **Node.js / Express** | Scalable RESTful API & Modular Business Logic |
+| **Database** | **NoSQL** | MongoDB & Mongoose (Document Modeling & Persistence) |
+| **Authentication** | **Protocol** | JWT (JSON Web Tokens) & Server-side Validation |
 
 ---
 
-### 🚀 Installation & Setup
+### 🚀 **Installation & Setup**
 
-1. **Clone the repository** git clone [https://github.com/username/ecopure.git]()
-2. **Install Backend Dependencies** cd backend && npm install
-3. **Install Admin Frontend Dependencies** cd admin && npm install
-4. **Environment Configuration** Create a **.env** file in the backend directory with your `MONGO_URI` and `JWT_SECRET` keys.
-5. **Initialize Application** Run `npm start` in both the backend and admin directories to launch the system.
+1. **Clone the Repository**
+`git clone https://github.com/username/ecopure.git`
+2. **Install Dependencies**
+`cd backend && npm install`
+`cd ../admin && npm install`
+3. **Environment Configuration**
+Create a **.env** file in the `/backend` directory with your `MONGO_URI` and `JWT_SECRET`.
+4. **Initialize Application**
+Execute `npm start` (or `npm run dev`) in both the **/backend** and **/admin** directories.
 
 ---
+
+<div align="center">
+<p><em>Fully functional and actively maintained.</em></p>
+</div>
+
+---
+
